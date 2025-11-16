@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -11,11 +12,8 @@
         --primary-dark: #a00000;
         --bg: #f4f4f4;
         --card-bg: #ffffff;
-        --accent: #ffe8e8;
     }
-    * {
-        box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
         font-family: Arial, sans-serif;
         background: var(--bg);
@@ -174,7 +172,7 @@
         <select id="produkt">
             <option value="">Bitte wählen…</option>
 
-            <optgroup label="Portionen (immer 3 Sorten wählbar)">
+            <optgroup label="Portionen (optional Sorten wählen)">
                 <option value="23">23. Kinder Portion (2 Kugeln) – 3,50 €</option>
                 <option value="24">24. Kleine Portion (3 Kugeln) – 5,00 €</option>
                 <option value="25">25. Normale Portion (4 Kugeln) – 6,50 €</option>
@@ -339,7 +337,7 @@
                 <option value="402">Glas Sekt – 3,90 €</option>
                 <option value="403">Campari Sekt – 3,90 €</option>
 
-                <option value="410">Aperitif Rosato (Bella/Mio/Duo) – 5,90 €</option>
+                <option value="410">Aperitif Rosato – 5,90 €</option>
                 <option value="430">Grappa – 4,70 €</option>
                 <option value="431">Asbach – 3,20 €</option>
                 <option value="432">Ramazzotti – 3,20 €</option>
@@ -385,17 +383,17 @@
 
         </select>
 
-        <!-- Geschmackswahl nur für Portionen (immer 3 Sorten) -->
+        <!-- Sortenwahl nur für Portionen (optional) -->
         <div id="geschmack-box" style="margin-top:12px; display:none;">
-            <label>Sorten wählen (immer 3 Sorten):</label>
+            <label>Sorten (optional, bis zu 3 wählen):</label>
             <select id="geschmack1"></select>
             <select id="geschmack2" style="margin-top:6px;"></select>
             <select id="geschmack3" style="margin-top:6px;"></select>
-            <div class="small">Bitte genau 3 Sorten auswählen.</div>
+            <div class="small">Wenn nichts gewählt wird, kommt die Portion in unserer Standardmischung.</div>
         </div>
 
         <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
-        <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße, etc.">
+        <input id="bemerkung" type="text" placeholder="z.B. ohne Sahne, wenig Soße …">
 
         <button class="btn" onclick="addToCart()">Zum Warenkorb hinzufügen</button>
     </div>
@@ -409,7 +407,7 @@
             Bestellung per WhatsApp senden 📲
         </button>
         <div class="small">
-            Die Bestellung wird mit Tischnummer und Gesamtbetrag direkt an die Küche gesendet.
+            Nach dem Senden bleibt der Tisch gespeichert. Sie können weitere Bestellungen für denselben Tisch machen.
         </div>
     </div>
 
@@ -420,7 +418,7 @@
 const WHATSAPP_NUMMER = "4917672809926";
 
 // Produkte mit Preisen und Typ
-// type: "cup3" = Portionen mit 3 Sorten | "normal" = feste Kombination
+// type: "cup3" = Portionen (Sorten optional) | "normal" = feste Kombination
 const PRODUKTE = {
     23: { name: "23. Kinder Portion (2 Kugeln)", preis: 3.50, type: "cup3" },
     24: { name: "24. Kleine Portion (3 Kugeln)", preis: 5.00, type: "cup3" },
@@ -606,7 +604,7 @@ const PRODUKTE = {
     638:{ name: "630h. Waffel Tutti Frutti", preis: 7.50, type: "normal" }
 };
 
-// Sortenliste
+// Sortenliste (für Portionen – optional)
 const SORTEN = [
     "Vanille",
     "Amarena",
@@ -633,7 +631,7 @@ const SORTEN = [
 
 let warenkorb = [];
 
-// Tisch-Optionen
+// Tische füllen
 const tischSelect = document.getElementById("tisch");
 for (let i = 1; i <= 33; i++) {
     const opt = document.createElement("option");
@@ -655,7 +653,7 @@ function fillSortenSelect(id) {
 }
 ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
-// Zeige/Verstecke Sorten-Box
+// Sorten-Box anzeigen/verstecken
 document.getElementById("produkt").addEventListener("change", function() {
     const wert = this.value;
     const box = document.getElementById("geschmack-box");
@@ -671,7 +669,6 @@ document.getElementById("produkt").addEventListener("change", function() {
     }
 });
 
-// In den Warenkorb
 function addToCart() {
     const tisch = document.getElementById("tisch").value;
     if (!tisch) {
@@ -694,11 +691,10 @@ function addToCart() {
         const s2 = document.getElementById("geschmack2").value;
         const s3 = document.getElementById("geschmack3").value;
 
-        if (!s1 || !s2 || !s3) {
-            alert("Bitte alle 3 Sorten auswählen.");
-            return;
-        }
-        sorten = [s1, s2, s3];
+        if (s1) sorten.push(s1);
+        if (s2) sorten.push(s2);
+        if (s3) sorten.push(s3);
+        // se nenhum sabor for escolhido, sorten fica vazio → standardmischung
     }
 
     warenkorb.push({
@@ -710,13 +706,14 @@ function addToCart() {
         bemerkung: bemerkung
     });
 
-    // Felder leeren
+    // Eingaben leeren
     document.getElementById("bemerkung").value = "";
     if (produkt.type === "cup3") {
         ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
             document.getElementById(id).value = "";
         });
     }
+    document.getElementById("produkt").value = "";
 
     updateCart();
 }
@@ -739,7 +736,7 @@ function updateCart() {
         info.className = "item-info";
 
         let text = item.name + " – " + item.preis.toFixed(2).replace(".", ",") + " €";
-        if (item.type === "cup3" && item.sorten.length === 3) {
+        if (item.type === "cup3" && item.sorten.length > 0) {
             text += "<br><span class='small'>Sorten: " + item.sorten.join(", ") + "</span>";
         }
         if (item.bemerkung) {
@@ -784,7 +781,7 @@ function sendWhatsApp() {
     warenkorb.forEach(item => {
         total += item.preis;
         let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
-        if (item.type === "cup3" && item.sorten.length === 3) {
+        if (item.type === "cup3" && item.sorten.length > 0) {
             line += ` – Sorten: ${item.sorten.join(", ")}`;
         }
         if (item.bemerkung) {
@@ -797,6 +794,10 @@ function sendWhatsApp() {
 
     const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
     window.open(url, "_blank");
+
+    // nach dem Senden: Warenkorb leeren, Tisch bleibt
+    warenkorb = [];
+    updateCart();
 }
 </script>
 
