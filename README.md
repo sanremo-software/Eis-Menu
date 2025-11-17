@@ -255,6 +255,7 @@
 
         <div class="category-buttons">
             <button class="cat-btn active" data-target="cat-eis">🍨 Eis &amp; Becher</button>
+            <button class="cat-btn" data-target="cat-kinder">👶 Kinder</button>
             <button class="cat-btn" data-target="cat-essen">🍽️ Snacks, Waffeln &amp; Desserts</button>
             <button class="cat-btn" data-target="cat-getraenke">☕ Kaffee &amp; Getränke</button>
         </div>
@@ -273,11 +274,15 @@
             <h3>🍨 Portionen (23–26)</h3>
             <div class="items-grid" id="grid-portions"></div>
 
-            <h3 style="margin-top:20px;">👶 Kinderbecher (horizontal)</h3>
-            <div class="items-strip" id="strip-kids"></div>
-
             <h3 style="margin-top:20px;">🍨 Eisbecher &amp; Spezial</h3>
             <div class="items-grid" id="grid-eis"></div>
+        </div>
+
+        <!-- KINDER – horizontal -->
+        <div id="cat-kinder" class="category">
+            <h2>👶 Kinderbecher</h2>
+            <p>Mit oder ohne Sahne, Sorten frei wählbar.</p>
+            <div class="items-strip" id="strip-kids"></div>
         </div>
 
         <!-- SNACKS, WAFFELN & DESSERTS -->
@@ -326,7 +331,7 @@ const portionItems = [
     {"id": "26","name": "Große Portion","price": 9.5}
 ];
 
-// Kinderbecher – agora com Sahne + Sorten, mas sem suplemento extra
+// Kinderbecher – com Sahne + Sorten, sem suplemento extra
 const kidsItems = [
     {"id": "1601","name": "Pinocchio","price": 5.10},
     {"id": "1602","name": "Spaghetti Bambini","price": 5.60},
@@ -567,7 +572,7 @@ function buildCards() {
         portionsGrid.appendChild(card);
     });
 
-    // Kinderbecher – horizontal, com Sahne + Sorten (sem suplemento)
+    // Kinder – horizontal, com Sahne + Sorten (sem suplemento)
     kidsItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -736,7 +741,7 @@ function attachAddHandlers() {
             const basePrice = parseFloat(card.getAttribute('data-price'));
             let unitPrice = basePrice;
 
-            const qtyInput = card.querySelector('.qty-input');
+            const qtyInput = card.querySelector('._qty-input, .qty-input');
             const qty = qtyInput ? parseInt(qtyInput.value || '1', 10) : 1;
 
             let detailsArr = [];
