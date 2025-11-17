@@ -39,6 +39,13 @@
             margin-bottom: 10px;
         }
 
+        .header-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
         .table-info {
             display: flex;
             flex-wrap: wrap;
@@ -242,6 +249,10 @@
             <h3>Digitale Speisekarte &amp; Tischbestellung</h3>
         </div>
 
+        <div class="header-note">
+            Dieses Bestellsystem funktioniert nur im Eiscafé San Remo und benötigt die Standortfreigabe auf Ihrem Handy.
+        </div>
+
         <!-- FOTO NO TOPO -->
         <div style="text-align:center;">
             <img src="eis-sanremo.jpg" alt="Eisbecher" style="width:100%;max-width:380px;border-radius:12px;margin-bottom:15px;">
@@ -335,7 +346,7 @@ const portionItems = [
     {"id": "26","name": "Große Portion","price": 9.5}
 ];
 
-// Kinderbecher – só aqui, sem repetir noutras categorias
+// Kinderbecher – só aqui
 const kidsItems = [
     {"id": "1601","name": "Pinocchio","price": 5.10},
     {"id": "1602","name": "Spaghetti Bambini","price": 5.60},
@@ -345,7 +356,7 @@ const kidsItems = [
     {"id": "1606","name": "Kinder Spaghetti Erdbeere","price": 6.00}
 ];
 
-// Eisbecher & Spezial (sem Kinderbecher aqui, para não repetir)
+// Eisbecher & Spezial
 const becherItems = [
     {"id": "30","name": "Amarena Becher","price": 8.5},
     {"id": "31","name": "Erdbeer Becher","price": 8.5},
@@ -844,8 +855,8 @@ attachAddHandlers();
 const cafeLat = 51.050898;
 const cafeLon = 8.393595;
 
-// Erlaubter Radius in Metern
-const maxDist = 60;
+// Erlaubter Radius in Metern (erhöht für bessere Innenraum-Genauigkeit)
+const maxDist = 150;
 
 // Distanzberechnung (Haversine-Formel)
 function distance(lat1, lon1, lat2, lon2) {
@@ -853,7 +864,7 @@ function distance(lat1, lon1, lat2, lon2) {
     const toRad = (value) => value * Math.PI / 180;
 
     const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
+    const dLon = toRad(don2 - lon1);
 
     const a =
         Math.sin(dLat / 2) ** 2 +
@@ -870,6 +881,7 @@ window.addEventListener('load', () => {
             <div style="text-align:center; margin-top:80px; font-family:Arial;">
                 <h1>⚠️ Zugriff nicht möglich</h1>
                 <h2>Dieses System benötigt die Standortfreigabe.</h2>
+                <p>Bitte Standort/GPS auf Ihrem Handy aktivieren und Seite neu laden.</p>
             </div>
         `;
         return;
@@ -899,6 +911,7 @@ window.addEventListener('load', () => {
                     <h1>⚠️ Zugriff verweigert</h1>
                     <h2>Bitte Standortfreigabe erlauben,<br>
                     um das Bestellsystem zu benutzen.</h2>
+                    <p>Öffnen Sie Ihre Browser-Einstellungen und aktivieren Sie die Standortfreigabe.</p>
                 </div>
             `;
         }
