@@ -172,7 +172,7 @@
         <select id="produkt">
             <option value="">Bitte wählen…</option>
 
-            <optgroup label="Portionen (optional Sorten wählen)">
+            <optgroup label="Portionen (Sorten optional)">
                 <option value="23">23. Kinder Portion (2 Kugeln) – 3,50 €</option>
                 <option value="24">24. Kleine Portion (3 Kugeln) – 5,00 €</option>
                 <option value="25">25. Normale Portion (4 Kugeln) – 6,50 €</option>
@@ -389,7 +389,22 @@
             <select id="geschmack1"></select>
             <select id="geschmack2" style="margin-top:6px;"></select>
             <select id="geschmack3" style="margin-top:6px;"></select>
-            <div class="small">Wenn nichts gewählt wird, kommt die Portion in unserer Standardmischung.</div>
+            <div class="small">
+                Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.
+            </div>
+        </div>
+
+        <!-- Sahne-Option (nur bei Eis-Artikeln angezeigt) -->
+        <div id="sahne-box" style="margin-top:8px; display:none;">
+            <label for="sahne">Sahne:</label>
+            <select id="sahne">
+                <option value="">Bitte auswählen (optional)</option>
+                <option value="mit Sahne">mit Sahne</option>
+                <option value="ohne Sahne">ohne Sahne</option>
+            </select>
+            <div class="small">
+                Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.
+            </div>
         </div>
 
         <label for="bemerkung" style="margin-top:8px;">Bemerkung (optional):</label>
@@ -403,11 +418,17 @@
         <h2 class="section-title">🧺 Warenkorb</h2>
         <div id="liste-items"></div>
         <div class="total" id="gesamt">Gesamt: 0,00 €</div>
+
         <button id="btn-whatsapp" class="btn" onclick="sendWhatsApp()" disabled>
             Bestellung per WhatsApp senden 📲
         </button>
-        <div class="small">
-            Nach dem Senden bleibt der Tisch gespeichert. Sie können weitere Bestellungen für denselben Tisch machen.
+
+        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
+            Tisch löschen / Neue Gäste
+        </button>
+
+        <div class="small" style="margin-top:6px;">
+            Nach dem Senden bleibt der Tisch gespeichert. Neue Gäste bitte mit „Tisch löschen / Neue Gäste“ starten.
         </div>
     </div>
 
@@ -629,6 +650,33 @@ const SORTEN = [
     "Pistazien"
 ];
 
+// Artikel, bei denen Sahne wählbar ist (Eis, Eisbecher, Spaghetti, Joghurt, Donuts, Eis-Desserts, Eisgetränke)
+const SAHNE_PRODUKTE = new Set([
+    // Portionen
+    23, 24, 25, 26,
+    // Eisbecher
+    30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+    81, 82, 83, 84, 85,
+    90, 91, 92, 93, 94, 96, 98, 99, 100, 101, 102, 103,
+    110, 111, 112, 113, 114, 116, 117, 118, 122,
+    // Spaghetti Eis & Pizza Eis
+    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62,
+    63, 64,
+    // Joghurt Becher
+    70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    // Donuts Eis
+    160, 161, 162, 163, 164,
+    // Eisgetränke & Cocktails (mit Eis/Sahne)
+    130, 131, 132, 133, 134,
+    140, 141, 142,
+    150, 151, 152, 153, 154, 155, 156,
+    // Desserts & Waffeln (mit Eis oder Sahne)
+    600, 601, 602, 603,
+    610,
+    620, 621, 622, 623, 624,
+    631, 632, 633, 634, 635, 636, 637, 638
+]);
+
 let warenkorb = [];
 
 // Tische füllen
@@ -653,19 +701,38 @@ function fillSortenSelect(id) {
 }
 ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
-// Sorten-Box anzeigen/verstecken
+// Produktwechsel: Sorten-Box und Sahne-Box anzeigen/verstecken
 document.getElementById("produkt").addEventListener("change", function() {
     const wert = this.value;
-    const box = document.getElementById("geschmack-box");
+    const geschmackBox = document.getElementById("geschmack-box");
+    const sahneBox = document.getElementById("sahne-box");
 
     if (!wert || !PRODUKTE[wert]) {
-        box.style.display = "none";
+        geschmackBox.style.display = "none";
+        sahneBox.style.display = "none";
+        document.getElementById("sahne").value = "";
         return;
     }
+
+    const idNum = parseInt(wert, 10);
+
+    // Sorten nur bei Portionen (cup3)
     if (PRODUKTE[wert].type === "cup3") {
-        box.style.display = "block";
+        geschmackBox.style.display = "block";
     } else {
-        box.style.display = "none";
+        geschmackBox.style.display = "none";
+        ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
+            const sel = document.getElementById(id);
+            if (sel) sel.value = "";
+        });
+    }
+
+    // Sahne nur bei Artikeln mit Eis/Sahne
+    if (SAHNE_PRODUKTE.has(idNum)) {
+        sahneBox.style.display = "block";
+    } else {
+        sahneBox.style.display = "none";
+        document.getElementById("sahne").value = "";
     }
 });
 
@@ -686,6 +753,7 @@ function addToCart() {
     let sorten = [];
     const bemerkung = document.getElementById("bemerkung").value.trim();
 
+    // Sorten nur bei Portionen
     if (produkt.type === "cup3") {
         const s1 = document.getElementById("geschmack1").value;
         const s2 = document.getElementById("geschmack2").value;
@@ -694,7 +762,13 @@ function addToCart() {
         if (s1) sorten.push(s1);
         if (s2) sorten.push(s2);
         if (s3) sorten.push(s3);
-        // se nenhum sabor for escolhido, sorten fica vazio → standardmischung
+    }
+
+    // Sahne nur bei Produkten mit Eis/Sahne
+    let sahne = "";
+    const idNum = parseInt(produktId, 10);
+    if (SAHNE_PRODUKTE.has(idNum)) {
+        sahne = document.getElementById("sahne").value;
     }
 
     warenkorb.push({
@@ -703,7 +777,8 @@ function addToCart() {
         preis: produkt.preis,
         type: produkt.type,
         sorten: sorten,
-        bemerkung: bemerkung
+        bemerkung: bemerkung,
+        sahne: sahne
     });
 
     // Eingaben leeren
@@ -714,6 +789,7 @@ function addToCart() {
         });
     }
     document.getElementById("produkt").value = "";
+    document.getElementById("sahne").value = "";
 
     updateCart();
 }
@@ -741,6 +817,9 @@ function updateCart() {
         }
         if (item.bemerkung) {
             text += "<br><span class='small'>Bemerkung: " + item.bemerkung + "</span>";
+        }
+        if (item.sahne) {
+            text += "<br><span class='small'>Sahne: " + item.sahne + "</span>";
         }
         info.innerHTML = text;
 
@@ -771,7 +850,7 @@ function sendWhatsApp() {
         return;
     }
     if (warenkorb.length === 0) {
-        alert("Warenkorb ist leer.");
+        alert("Der Warenkorb ist leer.");
         return;
     }
 
@@ -787,6 +866,9 @@ function sendWhatsApp() {
         if (item.bemerkung) {
             line += ` – Bemerkung: ${item.bemerkung}`;
         }
+        if (item.sahne) {
+            line += ` – Sahne: ${item.sahne}`;
+        }
         text += line + "%0A";
     });
 
@@ -795,9 +877,43 @@ function sendWhatsApp() {
     const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
     window.open(url, "_blank");
 
-    // nach dem Senden: Warenkorb leeren, Tisch bleibt
+    // Nach dem Senden: Warenkorb leeren, Tisch bleibt erhalten
     warenkorb = [];
     updateCart();
+}
+
+function resetTable() {
+    if (!confirm("Möchten Sie den Tisch wirklich zurücksetzen? Alle Bestellungen werden gelöscht.")) {
+        return;
+    }
+
+    // Warenkorb leeren
+    warenkorb = [];
+    updateCart();
+
+    // Tisch zurücksetzen
+    const tischSel = document.getElementById("tisch");
+    if (tischSel) {
+        tischSel.value = "";
+    }
+
+    // Produkt und Auswahl zurücksetzen
+    const produktSel = document.getElementById("produkt");
+    if (produktSel) {
+        produktSel.value = "";
+    }
+
+    ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
+        const sel = document.getElementById(id);
+        if (sel) sel.value = "";
+    });
+
+    const sahneSel = document.getElementById("sahne");
+    if (sahneSel) {
+        sahneSel.value = "";
+    }
+
+    document.getElementById("bemerkung").value = "";
 }
 </script>
 
