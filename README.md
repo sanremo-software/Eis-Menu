@@ -1,5 +1,4 @@
 
-<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -93,10 +92,29 @@
             background: rgba(255,255,255,0.95);
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
             margin-bottom: 15px;
+            border-left: 4px solid transparent;
         }
 
         .category.active {
             display: block;
+        }
+
+        /* cores diferentes por categoria */
+        #cat-eis {
+            border-left-color: #ffb74d;
+            background: rgba(255,248,225,0.95);
+        }
+        #cat-kinder {
+            border-left-color: #64b5f6;
+            background: rgba(227,242,253,0.95);
+        }
+        #cat-essen {
+            border-left-color: #81c784;
+            background: rgba(232,245,233,0.95);
+        }
+        #cat-getraenke {
+            border-left-color: #ba68c8;
+            background: rgba(243,229,245,0.95);
         }
 
         .items-grid {
@@ -153,21 +171,6 @@
             background-color: #4caf50;
             color: #fff;
             font-size: 0.85rem;
-        }
-
-        /* faixa horizontal para artigos de crianças */
-        .items-strip {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 10px;
-            padding-bottom: 6px;
-        }
-
-        .items-strip .item-card {
-            min-width: 230px;
-            flex: 0 0 auto;
-            margin-bottom: 0;
         }
 
         .order-summary {
@@ -278,11 +281,11 @@
             <div class="items-grid" id="grid-eis"></div>
         </div>
 
-        <!-- KINDER – horizontal -->
+        <!-- KINDER – VERTICAL -->
         <div id="cat-kinder" class="category">
             <h2>👶 Kinderbecher</h2>
             <p>Mit oder ohne Sahne, Sorten frei wählbar.</p>
-            <div class="items-strip" id="strip-kids"></div>
+            <div class="items-grid" id="grid-kinder"></div>
         </div>
 
         <!-- SNACKS, WAFFELN & DESSERTS -->
@@ -331,7 +334,7 @@ const portionItems = [
     {"id": "26","name": "Große Portion","price": 9.5}
 ];
 
-// Kinderbecher – com Sahne + Sorten, sem suplemento extra
+// Kinderbecher – só aqui, sem repetir noutras categorias
 const kidsItems = [
     {"id": "1601","name": "Pinocchio","price": 5.10},
     {"id": "1602","name": "Spaghetti Bambini","price": 5.60},
@@ -341,7 +344,7 @@ const kidsItems = [
     {"id": "1606","name": "Kinder Spaghetti Erdbeere","price": 6.00}
 ];
 
-// Restante Eisbecher & Spezial
+// Eisbecher & Spezial (sem Kinderbecher aqui, para não repetir)
 const becherItems = [
     {"id": "30","name": "Amarena Becher","price": 8.5},
     {"id": "31","name": "Erdbeer Becher","price": 8.5},
@@ -529,7 +532,7 @@ function formatDisplayPrice(value) {
 
 function buildCards() {
     const portionsGrid = document.getElementById('grid-portions');
-    const kidsStrip = document.getElementById('strip-kids');
+    const kidsGrid = document.getElementById('grid-kinder');
     const eisGrid = document.getElementById('grid-eis');
     const essenGrid = document.getElementById('grid-essen');
     const getraenkeGrid = document.getElementById('grid-getraenke');
@@ -542,7 +545,7 @@ function buildCards() {
         card.className = 'item-card';
         card.setAttribute('data-name', item.name);
         card.setAttribute('data-price', item.price);
-        card.setAttribute('data-portion', 'true'); // marca como porção especial
+        card.setAttribute('data-portion', 'true');
 
         card.innerHTML = `
             <div class="item-header">
@@ -572,7 +575,7 @@ function buildCards() {
         portionsGrid.appendChild(card);
     });
 
-    // Kinder – horizontal, com Sahne + Sorten (sem suplemento)
+    // Kinder – VERTICAL, com Sahne + Sorten (sem suplemento extra)
     kidsItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -604,7 +607,7 @@ function buildCards() {
                 <button class="add-btn">Zur Bestellung hinzufügen</button>
             </div>
         `;
-        kidsStrip.appendChild(card);
+        kidsGrid.appendChild(card);
     });
 
     // Eisbecher & Spezial
@@ -741,7 +744,7 @@ function attachAddHandlers() {
             const basePrice = parseFloat(card.getAttribute('data-price'));
             let unitPrice = basePrice;
 
-            const qtyInput = card.querySelector('._qty-input, .qty-input');
+            const qtyInput = card.querySelector('.qty-input');
             const qty = qtyInput ? parseInt(qtyInput.value || '1', 10) : 1;
 
             let detailsArr = [];
