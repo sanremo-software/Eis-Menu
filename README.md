@@ -1,4 +1,5 @@
 
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -274,7 +275,7 @@
                 Dunkle Schokolade, After Eight.
             </p>
 
-            <h3>🍨 Portionen </h3>
+            <h3>🍨 Portionen (23–26)</h3>
             <div class="items-grid" id="grid-portions"></div>
 
             <h3 style="margin-top:20px;">🍨 Eisbecher &amp; Spezial</h3>
@@ -836,5 +837,74 @@ document.getElementById('whatsAppBtn').addEventListener('click', function() {
 buildCards();
 attachAddHandlers();
 </script>
+
+<!-- 🔒 GPS-Schutz: System funktioniert nur im Eiscafé San Remo -->
+<script>
+// Exakte Koordinaten des Eiscafé San Remo
+const cafeLat = 51.050898;
+const cafeLon = 8.393595;
+
+// Erlaubter Radius in Metern
+const maxDist = 60;
+
+// Distanzberechnung (Haversine-Formel)
+function distance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const toRad = (value) => value * Math.PI / 180;
+
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+        Math.sin(dLon / 2) ** 2;
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+window.addEventListener('load', () => {
+    if (!navigator.geolocation) {
+        document.body.innerHTML = `
+            <div style="text-align:center; margin-top:80px; font-family:Arial;">
+                <h1>⚠️ Zugriff nicht möglich</h1>
+                <h2>Dieses System benötigt die Standortfreigabe.</h2>
+            </div>
+        `;
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            const dist = distance(lat, lon, cafeLat, cafeLon);
+
+            if (dist > maxDist) {
+                document.body.innerHTML = `
+                    <div style="text-align:center; margin-top:80px; font-family:Arial;">
+                        <h1>⚠️ Zugriff gesperrt</h1>
+                        <h2>Dieses Bestellsystem funktioniert nur<br>
+                        im <b>Eiscafé San Remo</b><br>
+                        Fürst-Richard-Str. 1, 57319 Bad Berleburg</h2>
+                        <p style="margin-top:20px;">Sie befinden sich außerhalb des erlaubten Bereichs.</p>
+                    </div>
+                `;
+            }
+        },
+        () => {
+            document.body.innerHTML = `
+                <div style="text-align:center; margin-top:80px; font-family:Arial;">
+                    <h1>⚠️ Zugriff verweigert</h1>
+                    <h2>Bitte Standortfreigabe erlauben,<br>
+                    um das Bestellsystem zu benutzen.</h2>
+                </div>
+            `;
+        }
+    );
+});
+</script>
+
 </body>
 </html>
