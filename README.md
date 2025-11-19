@@ -3,156 +3,246 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Eiscafé Sanremo – Digitale Speisekarte</title>
+    <title>Eiscafé Sanremo – Mobile & Tablet Bestellsystem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         * { box-sizing: border-box; }
 
+        :root {
+            --primary: #009246;       /* verde Itália */
+            --primary-dark: #006837;  /* verde escuro */
+            --bg: #fdfdfd;            /* fundo claro */
+            --accent-green: #009246;  /* verde */
+            --accent-blue: #1976d2;   /* azul botões secundários */
+            --accent-red: #ce2b37;    /* vermelho Itália */
+            --radius-lg: 18px;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background-image: url('fundo-gelado.jpg'); /* opcional */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: #222;
         }
 
-        .overlay {
+        .app-shell {
             min-height: 100vh;
-            background: rgba(255,255,255,0.9);
-            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            /* fundo com leve toque das cores italianas */
+            background: linear-gradient(
+                160deg,
+                rgba(0,146,70,0.06),
+                rgba(255,255,255,0.9),
+                rgba(206,43,55,0.06)
+            );
         }
 
-        .container {
-            max-width: 1100px;
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            /* bandeira italiana: verde – branco – vermelho */
+            background: linear-gradient(90deg, #009246, #ffffff, #ce2b37);
+            color: #222;
+            padding: 10px 14px 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header-inner {
+            max-width: 720px;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        h1, h2, h3 {
-            margin-top: 0;
+        .logo-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
         }
 
-        .header {
-            text-align: center;
+        /* se tiveres logo, podes trocar o emoji por <img> aqui */
+        .logo-circle img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .header-text h1 {
+            font-size: 18px;
+            margin: 0;
+            color: #222;
+        }
+
+        .header-text p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.9;
+            color: #333;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 8px 8px 90px; /* espaço para painel de pedido */
+        }
+
+        .page {
+            width: 100%;
+            max-width: 720px; /* bom para tablets também */
+        }
+
+        .card {
+            background: rgba(255,255,255,0.98);
+            border-radius: var(--radius-lg);
+            padding: 10px 12px;
             margin-bottom: 10px;
-        }
-
-        .header-note {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #444;
-            margin-bottom: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            border-left: 4px solid rgba(0,146,70,0.4); /* verde Itália */
         }
 
         .table-info {
             display: flex;
+            gap: 8px;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 10px;
-            justify-content: center;
         }
 
         .table-info input {
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            min-width: 140px;
+            flex: 1 1 130px;
+            padding: 10px;
+            border-radius: 999px;
+            border: 1px solid #ddd;
+            font-size: 14px;
         }
 
         .info-note {
-            text-align: center;
-            font-size: 0.95rem;
-            color: #444;
-            background: #fff;
-            padding: 8px 12px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 12px;
+            color: #333;
+            margin-top: 6px;
         }
 
-        .category-buttons {
+        .info-note strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Categorias - estilo app, com scroll horizontal */
+        .category-strip {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 15px;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            margin: 4px -4px 0;
         }
 
-        .category-buttons button {
+        .category-strip::-webkit-scrollbar {
+            height: 4px;
+        }
+        .category-strip::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.18);
+            border-radius: 999px;
+        }
+
+        .cat-btn {
+            flex: 0 0 auto;
             border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            background-color: #f3f3f3;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
         }
 
-        .category-buttons button.active {
-            background-color: #ffcc66;
+        .cat-btn.active {
+            background: #fff;
+            color: #d84315;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .cat-btn span.icon {
+            font-size: 16px;
         }
 
         .category {
             display: none;
-            border-radius: 12px;
-            padding: 10px;
-            background: rgba(255,255,255,0.95);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-            border-left: 4px solid transparent;
+            margin-top: 6px;
         }
 
         .category.active {
             display: block;
         }
 
-        /* cores diferentes por categoria */
-        #cat-eis {
-            border-left-color: #ffb74d;
-            background: rgba(255,248,225,0.95);
+        .category h2 {
+            font-size: 18px;
+            margin: 0 0 6px;
         }
-        #cat-kinder {
-            border-left-color: #64b5f6;
-            background: rgba(227,242,253,0.95);
-        }
-        #cat-essen {
-            border-left-color: #81c784;
-            background: rgba(232,245,233,0.95);
-        }
-        #cat-getraenke {
-            border-left-color: #ba68c8;
-            background: rgba(243,229,245,0.95);
+
+        .category p {
+            font-size: 12px;
+            margin: 0 0 6px;
         }
 
         .items-grid {
-            display: block;
-            max-height: 480px;
+            max-height: 420px;
             overflow-y: auto;
             padding-right: 4px;
         }
 
+        .items-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+        .items-grid::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.16);
+            border-radius: 999px;
+        }
+
         .item-card {
-            margin-bottom: 10px;
-            border-radius: 12px;
-            padding: 10px;
-            background: #ffffff;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            background: #fff;
+            border-radius: 14px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
 
         .item-header {
             display: flex;
             justify-content: space-between;
+            gap: 8px;
             align-items: baseline;
-            margin-bottom: 4px;
         }
 
-        .item-name { font-weight: bold; }
-        .item-price { font-weight: bold; }
+        .item-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .item-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2e7d32;
+            white-space: nowrap;
+        }
 
         .item-options {
-            font-size: 0.85rem;
-            margin-bottom: 6px;
+            font-size: 11px;
+            color: #555;
+            margin-top: 4px;
         }
 
         .item-row {
@@ -163,160 +253,321 @@
             margin-top: 6px;
         }
 
+        .item-row label {
+            font-size: 11px;
+        }
+
         .item-row input[type="number"],
         .item-row select {
-            padding: 5px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 0.85rem;
+            font-size: 12px;
+            padding: 5px 7px;
+            border-radius: 999px;
+            border: 1px solid #ddd;
+            min-width: 70px;
         }
 
-        .item-row button {
-            border: none;
-            padding: 6px 10px;
+        .item-row .flavour-select {
             border-radius: 10px;
+            min-width: 150px;
+            font-size: 11px;
+        }
+
+        .item-row .add-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 999px;
             cursor: pointer;
-            background-color: #4caf50;
+            background: var(--accent-green);
             color: #fff;
-            font-size: 0.85rem;
+            font-size: 12px;
+            font-weight: 600;
+            flex: 1 1 120px;
+            text-align: center;
         }
 
+        /* Botão flutuante para abrir painel */
+        .order-panel-trigger {
+            position: fixed;
+            bottom: 68px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 18;
+            pointer-events: none;
+        }
+
+        .order-panel-trigger button {
+            pointer-events: auto;
+            border: none;
+            background: #2e7d32;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        /* Painel de pedido (bottom sheet) */
         .order-summary {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 19;
+            background: #ffffff;
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.25);
+            max-height: 65vh;
+            transform: translateY(100%);
+            transition: transform 0.25s ease-out;
         }
 
-        .order-summary h2 { margin-top: 0; }
-        .order-list { font-size: 0.9rem; margin-bottom: 8px; }
+        .order-summary.open {
+            transform: translateY(0%);
+        }
+
+        .order-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 8px 12px 10px;
+        }
+
+        .order-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .order-header-bar h2 {
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .order-toggle {
+            font-size: 11px;
+            color: #555;
+        }
+
+        .drag-handle {
+            width: 40px;
+            height: 4px;
+            border-radius: 999px;
+            background: #ddd;
+            margin: 4px auto 6px;
+        }
+
+        .order-list {
+            max-height: 32vh;
+            overflow-y: auto;
+            font-size: 12px;
+            padding-right: 4px;
+        }
 
         .order-item {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
+            gap: 8px;
             border-bottom: 1px solid #eee;
-            padding: 3px 0;
+            padding: 4px 0;
+        }
+
+        .order-item strong {
+            font-size: 12px;
         }
 
         .order-total {
-            font-weight: bold;
-            margin-top: 5px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .small-note {
+            font-size: 10px;
+            color: #555;
+            margin-top: 2px;
         }
 
         .order-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         .order-actions button {
+            flex: 1 1 100px;
             border: none;
-            padding: 8px 14px;
-            border-radius: 18px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
             cursor: pointer;
-            font-size: 0.9rem;
         }
 
-        .btn-clear {
-            background-color: #e53935;
-            color: #fff;
+        .btn-clear { background: var(--accent-red); }
+        .btn-print { background: var(--accent-blue); }
+        .btn-whatsapp { background: #25D366; }
+
+        /* Estilos de impressão – só o painel de pedido */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .order-summary,
+            .order-summary * {
+                visibility: visible;
+            }
+
+            .order-summary {
+                position: static;
+                transform: none !important;
+                box-shadow: none;
+                border-radius: 0;
+                max-height: none;
+            }
+
+            .order-inner {
+                margin: 0;
+                padding: 10px;
+            }
+
+            .order-actions {
+                display: none;
+            }
+
+            header, .order-panel-trigger {
+                display: none !important;
+            }
         }
 
-        .btn-print {
-            background-color: #1976d2;
-            color: #fff;
+        /* Ajustes para tablets / ecrãs maiores */
+        @media (min-width: 600px) {
+            header {
+                padding-inline: 18px;
+            }
+            .content {
+                padding-inline: 18px;
+            }
+            .category-strip {
+                justify-content: flex-start;
+            }
         }
 
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: #fff;
-        }
-
-        .small-note {
-            font-size: 0.75rem;
-            color: #555;
+        @media (min-width: 900px) {
+            .page {
+                max-width: 820px;
+            }
+            .order-inner {
+                max-width: 820px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="overlay">
-    <div class="container">
-        <div class="header">
-            <h1>Eiscafé Sanremo</h1>
-            <h3>Digitale Speisekarte &amp; Tischbestellung</h3>
-        </div>
-
-        <div class="header-note">
-            Dieses Bestellsystem funktioniert nur im Eiscafé San Remo und benötigt die Standortfreigabe auf Ihrem Handy.
-        </div>
-
-        <!-- FOTO NO TOPO -->
-        <div style="text-align:center;">
-            <img src="eis-sanremo.jpg" alt="Eisbecher" style="width:100%;max-width:380px;border-radius:12px;margin-bottom:15px;">
-        </div>
-
-        <div class="table-info">
-            <input type="text" id="tableNumber" placeholder="Tischnummer">
-            <input type="text" id="guestName" placeholder="Name / Familie (optional)">
-        </div>
-
-        <div class="info-note">
-            <strong>Bitte zuerst die Tischnummer eingeben.</strong><br>
-            Danach können Sie die gewünschten Produkte auswählen und die Bestellung abschicken.
-        </div>
-
-        <div class="category-buttons">
-            <button class="cat-btn active" data-target="cat-eis">🍨 Eis &amp; Becher</button>
-            <button class="cat-btn" data-target="cat-kinder">👶 Kinder</button>
-            <button class="cat-btn" data-target="cat-essen">🍽️ Snacks, Waffeln &amp; Desserts</button>
-            <button class="cat-btn" data-target="cat-getraenke">☕ Kaffee &amp; Getränke</button>
-        </div>
-
-        <!-- EIS & BECHER -->
-        <div id="cat-eis" class="category active">
-            <h2>🍨 Eis &amp; Becher</h2>
-            <p>
-                <strong>Eissorten (Auswahl):</strong>
-                Vanille, Stracciatella, Schokolade, Amarena Kirsch, Joghurt,
-                Cookies, Erdbeer, Himbeere, Banane, Schlumpfeis, Zitrone,
-                Mango, Limette, Maracuja, Walnuss, Malaga, Pistazie,
-                Dunkle Schokolade, After Eight.
-            </p>
-
-            <h3>🍨 Portionen </h3>
-            <div class="items-grid" id="grid-portions"></div>
-
-            <h3 style="margin-top:20px;">🍨 Eisbecher &amp; Spezial</h3>
-            <div class="items-grid" id="grid-eis"></div>
-        </div>
-
-        <!-- KINDER – VERTICAL -->
-        <div id="cat-kinder" class="category">
-            <h2>👶 Kinderbecher</h2>
-            <p>Mit oder ohne Sahne, Sorten frei wählbar.</p>
-            <div class="items-grid" id="grid-kinder"></div>
-        </div>
-
-        <!-- SNACKS, WAFFELN & DESSERTS -->
-        <div id="cat-essen" class="category">
-            <h2>🍽️ Snacks, Waffeln &amp; Desserts</h2>
-            <div class="items-grid" id="grid-essen"></div>
-        </div>
-
-        <!-- KAFFEE & GETRÄNKE -->
-        <div id="cat-getraenke" class="category">
-            <h2>☕ Kaffee &amp; Getränke</h2>
-            <div class="items-grid" id="grid-getraenke"></div>
-        </div>
-
-        <div class="order-summary">
-            <h2>🧾 Aktuelle Bestellung</h2>
-            <div class="order-list" id="orderList">
-                Noch keine Positionen.
+<div class="app-shell">
+    <header>
+        <div class="header-inner">
+            <div class="logo-circle">
+                <!-- se tiveres logo: <img src="logo-sanremo.png" alt="Eiscafé Sanremo"> -->
+                🍦
             </div>
+            <div class="header-text">
+                <h1>Eiscafé Sanremo</h1>
+                <p>Digitale Speisekarte &amp; Tischbestellung</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="page">
+
+            <!-- Dados da mesa -->
+            <div class="card">
+                <div class="table-info">
+                    <input type="text" id="tableNumber" placeholder="Tischnummer *">
+                    <input type="text" id="guestName" placeholder="Name / Familie (optional)">
+                </div>
+                <p class="info-note">
+                    <strong>Bitte zuerst die Tischnummer eingeben.</strong>
+                    Danach Produkte auswählen und die Bestellung abschicken.
+                </p>
+            </div>
+
+            <!-- Botões de categoria -->
+            <div class="card">
+                <div class="category-strip">
+                    <button class="cat-btn active" data-target="cat-eis">
+                        <span class="icon">🍨</span> Eis &amp; Becher
+                    </button>
+                    <button class="cat-btn" data-target="cat-kinder">
+                        <span class="icon">👶</span> Kinder
+                    </button>
+                    <button class="cat-btn" data-target="cat-essen">
+                        <span class="icon">🍽️</span> Snacks &amp; Desserts
+                    </button>
+                    <button class="cat-btn" data-target="cat-getraenke">
+                        <span class="icon">☕</span> Getränke
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categorias -->
+            <div class="card category active" id="cat-eis">
+                <h2>🍨 Eis &amp; Becher</h2>
+                <p>
+                    <strong>Eissorten (Auswahl):</strong><br>
+                    Vanille, Stracciatella, Schokolade, Amarena Kirsch, Joghurt,
+                    Cookies, Erdbeer, Himbeere, Banane, Schlumpfeis, Zitrone,
+                    Mango, Limette, Maracuja, Walnuss, Malaga, Pistazie,
+                    Dunkle Schokolade, After Eight.
+                </p>
+
+                <h3 style="font-size:14px;margin:6px 0 4px;">Portionen (23–26)</h3>
+                <div class="items-grid" id="grid-portions"></div>
+
+                <h3 style="font-size:14px;margin:10px 0 4px;">Eisbecher &amp; Spezial</h3>
+                <div class="items-grid" id="grid-eis"></div>
+            </div>
+
+            <div class="card category" id="cat-kinder">
+                <h2>👶 Kinderbecher</h2>
+                <p>Mit oder ohne Sahne, Sorten frei wählbar.</p>
+                <div class="items-grid" id="grid-kinder"></div>
+            </div>
+
+            <div class="card category" id="cat-essen">
+                <h2>🍽️ Snacks, Waffeln &amp; Desserts</h2>
+                <div class="items-grid" id="grid-essen"></div>
+            </div>
+
+            <div class="card category" id="cat-getraenke">
+                <h2>☕ Kaffee &amp; Getränke</h2>
+                <div class="items-grid" id="grid-getraenke"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Botão flutuante para abrir o painel de pedido -->
+    <div class="order-panel-trigger">
+        <button type="button" id="toggleOrderPanelBtn">🧾 Aktuelle Bestellung anzeigen</button>
+    </div>
+
+    <!-- Painel de Pedido (bottom sheet) -->
+    <div class="order-summary" id="orderPanel">
+        <div class="drag-handle"></div>
+        <div class="order-inner">
+            <div class="order-header-bar">
+                <h2>🧾 Aktuelle Bestellung</h2>
+                <div class="order-toggle" id="orderPanelStatus">Tippen, um zu schließen</div>
+            </div>
+            <div class="order-list" id="orderList">Noch keine Positionen.</div>
             <div class="order-total" id="orderTotal">Gesamt: 0,00 €</div>
             <div class="small-note">
                 Diese Seite speichert keine Daten auf dem Server – sie dient nur als Übersicht für den Tisch.
@@ -331,6 +582,8 @@
 </div>
 
 <script>
+/* ---------- DATEN ---------- */
+
 const flavours = [
     "Vanille","Stracciatella","Schokolade","Amarena Kirsch","Joghurt",
     "Cookies","Erdbeer","Himbeere","Banane","Schlumpfeis","Zitrone",
@@ -338,7 +591,7 @@ const flavours = [
     "Dunkle Schokolade","After Eight"
 ];
 
-// Porções 23–26 (com suplemento de Sahne +1,20 €)
+// Portionen  (mit Sahne-Zuschlag)
 const portionItems = [
     {"id": "23","name": "Kinder Portion","price": 3.5},
     {"id": "24","name": "Kleine Portion","price": 5.0},
@@ -346,7 +599,6 @@ const portionItems = [
     {"id": "26","name": "Große Portion","price": 9.5}
 ];
 
-// Kinderbecher – só aqui
 const kidsItems = [
     {"id": "1601","name": "Pinocchio","price": 5.10},
     {"id": "1602","name": "Spaghetti Bambini","price": 5.60},
@@ -356,7 +608,6 @@ const kidsItems = [
     {"id": "1606","name": "Kinder Spaghetti Erdbeere","price": 6.00}
 ];
 
-// Eisbecher & Spezial
 const becherItems = [
     {"id": "30","name": "Amarena Becher","price": 8.5},
     {"id": "31","name": "Erdbeer Becher","price": 8.5},
@@ -528,6 +779,8 @@ const getraenkeItems = [
     {"id": "434","name": "Hugo","price": 6.1}
 ];
 
+/* ---------- FUNÇÕES DE UI ---------- */
+
 document.querySelectorAll('.cat-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -551,7 +804,7 @@ function buildCards() {
 
     const flavourOptions = flavours.map(f => `<option value="${f}">${f}</option>`).join('');
 
-    // Porções 23–26 (com suplemento de Sahne)
+    // Portionen (23–26) mit Sahne-Zuschlag
     portionItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -578,7 +831,7 @@ function buildCards() {
                         <option value="ohne Sahne">ohne Sahne</option>
                     </select>
                 </label>
-                <select class="flavour-select" multiple size="3" style="min-width:140px;">
+                <select class="flavour-select" multiple size="3">
                     ${flavourOptions}
                 </select>
                 <button class="add-btn">Zur Bestellung hinzufügen</button>
@@ -587,7 +840,7 @@ function buildCards() {
         portionsGrid.appendChild(card);
     });
 
-    // Kinder – VERTICAL, com Sahne + Sorten (sem suplemento extra)
+    // Kinderbecher
     kidsItems.forEach(item => {
         const card = document.createElement('div');
         card.className = 'item-card';
@@ -613,7 +866,7 @@ function buildCards() {
                         <option value="ohne Sahne">ohne Sahne</option>
                     </select>
                 </label>
-                <select class="flavour-select" multiple size="3" style="min-width:140px;">
+                <select class="flavour-select" multiple size="3">
                     ${flavourOptions}
                 </select>
                 <button class="add-btn">Zur Bestellung hinzufügen</button>
@@ -648,7 +901,7 @@ function buildCards() {
                         <option value="ohne Sahne">ohne Sahne</option>
                     </select>
                 </label>
-                <select class="flavour-select" multiple size="3" style="min-width:140px;">
+                <select class="flavour-select" multiple size="3">
                     ${flavourOptions}
                 </select>
                 <button class="add-btn">Zur Bestellung hinzufügen</button>
@@ -702,6 +955,8 @@ function buildCards() {
     });
 }
 
+/* ---------- LÓGICA DA ENCOMENDA ---------- */
+
 const order = [];
 
 function updateOrderDisplay() {
@@ -738,7 +993,6 @@ function updateOrderDisplay() {
     totalEl.textContent = 'Gesamt: ' + formatDisplayPrice(total);
 }
 
-// Tischnummer obrigatória + suplemento Sahne nas porções 23–26
 function attachAddHandlers() {
     document.querySelectorAll('.item-card .add-btn').forEach(function(button) {
         button.addEventListener('click', function() {
@@ -768,7 +1022,7 @@ function attachAddHandlers() {
 
                 const isPortion = card.getAttribute('data-portion') === 'true';
                 if (isPortion && creamValue === 'mit Sahne') {
-                    unitPrice = basePrice + 1.20; // suplemento 1,20 € apenas nas porções
+                    unitPrice = basePrice + 1.20;
                 }
             }
 
@@ -780,8 +1034,12 @@ function attachAddHandlers() {
                 }
             }
 
+            const tableNumberVal = document.getElementById('tableNumber').value.trim();
             const guestName = document.getElementById('guestName').value.trim();
-            detailsArr.push('Tisch: ' + tableNumber);
+
+            if (tableNumberVal) {
+                detailsArr.push('Tisch: ' + tableNumberVal);
+            }
             if (guestName) {
                 detailsArr.push('Gast: ' + guestName);
             }
@@ -797,9 +1055,12 @@ function attachAddHandlers() {
             });
 
             updateOrderDisplay();
+            openOrderPanel();
         });
     });
 }
+
+/* ---------- BOTÕES PRINCIPAIS ---------- */
 
 document.getElementById('clearOrderBtn').addEventListener('click', function() {
     order.length = 0;
@@ -822,7 +1083,7 @@ document.getElementById('whatsAppBtn').addEventListener('click', function() {
     const tableNumber = document.getElementById('tableNumber').value.trim();
     const guestName = document.getElementById('guestName').value.trim();
 
-    let text = 'Bestellung Eiscafé Sanremo%0A';
+    let text = 'Neue Tisch-Bestellung – Eiscafé Sanremo%0A';
 
     if (tableNumber) text += 'Tisch: ' + tableNumber + '%0A';
     if (guestName) text += 'Gast: ' + guestName + '%0A';
@@ -838,86 +1099,51 @@ document.getElementById('whatsAppBtn').addEventListener('click', function() {
     });
 
     text += '%0A Gesamt: ' + formatDisplayPrice(total);
+    text += '%0A Vielen Dank!';
 
-    const whatsAppNumber = "4917672809926"; // teu número
+    const whatsAppNumber = "4917672809926"; // teu número em formato internacional
     const url = 'https://wa.me/' + whatsAppNumber + '?text=' + text;
 
     window.open(url, '_blank');
 });
 
-buildCards();
-attachAddHandlers();
-</script>
+/* ---------- PAINEL DE PEDIDO (APP) ---------- */
 
-<!-- 🔒 GPS-Schutz: System funktioniert nur im Eiscafé San Remo -->
-<script>
-// Exakte Koordinaten des Eiscafé San Remo
-const cafeLat = 51.050898;
-const cafeLon = 8.393595;
+const orderPanel = document.getElementById('orderPanel');
+const toggleOrderBtn = document.getElementById('toggleOrderPanelBtn');
+const orderPanelStatus = document.getElementById('orderPanelStatus');
 
-// Erlaubter Radius in Metern (erhöht für bessere Innenraum-Genauigkeit)
-const maxDist = 150;
-
-// Distanzberechnung (Haversine-Formel)
-function distance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3;
-    const toRad = (value) => value * Math.PI / 180;
-
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(don2 - lon1);
-
-    const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-        Math.sin(dLon / 2) ** 2;
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+function openOrderPanel() {
+    orderPanel.classList.add('open');
+    orderPanelStatus.textContent = 'Nach unten wischen oder tippen, um zu schließen';
 }
 
-window.addEventListener('load', () => {
-    if (!navigator.geolocation) {
-        document.body.innerHTML = `
-            <div style="text-align:center; margin-top:80px; font-family:Arial;">
-                <h1>⚠️ Zugriff nicht möglich</h1>
-                <h2>Dieses System benötigt die Standortfreigabe.</h2>
-                <p>Bitte Standort/GPS auf Ihrem Handy aktivieren und Seite neu laden.</p>
-            </div>
-        `;
-        return;
+function closeOrderPanel() {
+    orderPanel.classList.remove('open');
+    orderPanelStatus.textContent = 'Tippen, um zu öffnen';
+}
+
+toggleOrderBtn.addEventListener('click', function() {
+    if (orderPanel.classList.contains('open')) {
+        closeOrderPanel();
+    } else {
+        openOrderPanel();
     }
-
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const dist = distance(lat, lon, cafeLat, cafeLon);
-
-            if (dist > maxDist) {
-                document.body.innerHTML = `
-                    <div style="text-align:center; margin-top:80px; font-family:Arial;">
-                        <h1>⚠️ Zugriff gesperrt</h1>
-                        <h2>Dieses Bestellsystem funktioniert nur<br>
-                        im <b>Eiscafé San Remo</b><br>
-                        Fürst-Richard-Str. 1, 57319 Bad Berleburg</h2>
-                        <p style="margin-top:20px;">Sie befinden sich außerhalb des erlaubten Bereichs.</p>
-                    </div>
-                `;
-            }
-        },
-        () => {
-            document.body.innerHTML = `
-                <div style="text-align:center; margin-top:80px; font-family:Arial;">
-                    <h1>⚠️ Zugriff verweigert</h1>
-                    <h2>Bitte Standortfreigabe erlauben,<br>
-                    um das Bestellsystem zu benutzen.</h2>
-                    <p>Öffnen Sie Ihre Browser-Einstellungen und aktivieren Sie die Standortfreigabe.</p>
-                </div>
-            `;
-        }
-    );
 });
-</script>
 
+// fechar ao clicar fora do conteúdo
+orderPanel.addEventListener('click', function(e) {
+    const inner = e.target.closest('.order-inner');
+    if (!inner) {
+        closeOrderPanel();
+    }
+});
+
+/* ---------- INICIALIZAÇÃO ---------- */
+
+buildCards();
+attachAddHandlers();
+updateOrderDisplay();
+</script>
 </body>
 </html>
