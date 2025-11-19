@@ -491,7 +491,6 @@
             <div class="card">
                 <div class="table-info">
                     <input type="text" id="tableNumber" placeholder="Tischnummer *">
-                    <input type="text" id="guestName" placeholder="Name / Familie (optional)">
                 </div>
                 <p class="info-note">
                     <strong>Bitte zuerst die Tischnummer eingeben.</strong>
@@ -1035,13 +1034,8 @@ function attachAddHandlers() {
             }
 
             const tableNumberVal = document.getElementById('tableNumber').value.trim();
-            const guestName = document.getElementById('guestName').value.trim();
-
             if (tableNumberVal) {
                 detailsArr.push('Tisch: ' + tableNumberVal);
-            }
-            if (guestName) {
-                detailsArr.push('Gast: ' + guestName);
             }
 
             const details = detailsArr.join(' | ');
@@ -1065,7 +1059,6 @@ function attachAddHandlers() {
 document.getElementById('clearOrderBtn').addEventListener('click', function() {
     order.length = 0;
     document.getElementById('tableNumber').value = '';
-    document.getElementById('guestName').value = '';
     updateOrderDisplay();
     alert('Tisch wurde geleert. Neue Gäste können bestellen.');
 });
@@ -1081,12 +1074,10 @@ document.getElementById('whatsAppBtn').addEventListener('click', function() {
     }
 
     const tableNumber = document.getElementById('tableNumber').value.trim();
-    const guestName = document.getElementById('guestName').value.trim();
 
     let text = 'Neue Tisch-Bestellung – Eiscafé Sanremo%0A';
 
     if (tableNumber) text += 'Tisch: ' + tableNumber + '%0A';
-    if (guestName) text += 'Gast: ' + guestName + '%0A';
     text += '%0A';
 
     let total = 0;
