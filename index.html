@@ -8,27 +8,33 @@
 
     <style>
         :root {
-            --primary: #d40000;
-            --primary-dark: #a00000;
-            --bg: #f4f4f4;
+            --primary: #e53935;
+            --primary-dark: #b71c1c;
+            --bg: #fff8f2;
             --card-bg: #ffffff;
+
+            --tab-portions: #ffb300;
+            --tab-kids: #ff4081;
+            --tab-eis: #29b6f6;
+            --tab-food: #66bb6a;
+            --tab-drinks: #ab47bc;
         }
         * { box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
-            background: var(--bg);
+            background: radial-gradient(circle at top, #fffdf8 0%, #fff3e0 35%, #ffe0b2 100%);
             margin: 0;
             padding: 0;
             color: #222;
         }
 
-        /* HEADER MIT LOGO NEUTRAL */
+        /* HEADER */
         .header {
             width: 100%;
-            background: linear-gradient(135deg, #ffffff, #f4f4f4);
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: linear-gradient(135deg, #ffffff 0%, #fff8e1 40%, #ffe0b2 100%);
+            padding: 12px 0 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
         .header-inner {
             max-width: 900px;
@@ -36,7 +42,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             padding: 0 10px;
         }
         .header-logo {
@@ -47,7 +53,7 @@
             object-fit: contain;
         }
         .header-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             color: #333;
             letter-spacing: 0.5px;
@@ -56,10 +62,10 @@
         @media (max-width: 600px) {
             .header-inner {
                 flex-direction: column;
-                gap: 10px;
+                gap: 6px;
             }
             .header-title {
-                font-size: 18px;
+                font-size: 17px;
             }
         }
 
@@ -78,9 +84,10 @@
         .card {
             background: var(--card-bg);
             padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.07);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.8);
         }
         label {
             font-size: 14px;
@@ -92,13 +99,14 @@
             width: 100%;
             padding: 9px 10px;
             font-size: 14px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+            border-radius: 10px;
+            border: 1px solid #d0d0d0;
             background: #fff;
         }
         select:focus, input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(229,57,53,0.2);
         }
         .btn {
             background: var(--primary);
@@ -106,32 +114,42 @@
             padding: 10px;
             display: inline-block;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 999px;
             text-decoration: none;
             margin-top: 12px;
             font-size: 16px;
             border: none;
             cursor: pointer;
             width: 100%;
+            transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s ease;
         }
         .btn:hover {
             background: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+            transform: translateY(-1px);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
         .btn:disabled {
-            background: #999;
+            background: #c5c5c5;
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
+
         #warenkorb {
-            background: #fff;
+            background: rgba(255,255,255,0.98);
             padding: 14px;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.07);
-            border: 1px solid #f0f0f0;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.9);
         }
         #liste-items div {
             padding: 6px 0;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px dashed #e0e0e0;
             font-size: 14px;
         }
         .line-item {
@@ -144,13 +162,16 @@
             flex: 1;
         }
         .btn-remove {
-            background: #999;
+            background: #ff7043;
             border: none;
             color: #fff;
-            padding: 4px 8px;
-            border-radius: 6px;
+            padding: 4px 9px;
+            border-radius: 999px;
             font-size: 11px;
             cursor: pointer;
+        }
+        .btn-remove:hover {
+            background: #f4511e;
         }
         .total {
             font-weight: bold;
@@ -173,44 +194,107 @@
         }
         .tab-btn {
             flex: 1 1 auto;
-            padding: 8px;
+            padding: 7px 8px;
             font-size: 13px;
             border-radius: 999px;
             border: 1px solid #ddd;
-            background: #fff;
+            background: #ffffff;
             cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #444;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .tab-btn.active {
-            background: var(--primary);
             color: #fff;
-            border-color: var(--primary);
+            border-color: transparent;
+            box-shadow: 0 3px 9px rgba(0,0,0,0.15);
         }
+        .tab-portions.active { background: var(--tab-portions); }
+        .tab-kids.active     { background: var(--tab-kids); }
+        .tab-eis.active      { background: var(--tab-eis); }
+        .tab-food.active     { background: var(--tab-food); }
+        .tab-drinks.active   { background: var(--tab-drinks); }
+
+        .tab-portions { border-color: rgba(255,179,0,0.6); }
+        .tab-kids     { border-color: rgba(255,64,129,0.5); }
+        .tab-eis      { border-color: rgba(41,182,246,0.5); }
+        .tab-food     { border-color: rgba(102,187,106,0.6); }
+        .tab-drinks   { border-color: rgba(171,71,188,0.6); }
+
         @media (max-width: 600px) {
             .tab-btn {
-                font-size: 12px;
-                padding: 6px;
+                font-size: 11px;
+                padding: 6px 6px;
             }
+        }
+
+        /* Chef-Bereich */
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .btn-logout {
+            background: #757575;
+            border: none;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-logout:hover {
+            background: #616161;
+        }
+        .admin-order {
+            border-bottom: 1px dashed #ddd;
+            padding: 6px 0;
+            font-size: 12px;
+        }
+        .btn-small {
+            background: #c62828;
+            border: none;
+            color: #fff;
+            padding: 3px 7px;
+            border-radius: 999px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 3px;
+        }
+        .btn-small:hover {
+            background: #b71c1c;
         }
 
         /* Rechtlicher Hinweis */
         .legal-box {
             font-size: 11px;
             color: #777;
-            margin: 18px auto 0 auto;
+            margin: 10px auto 0 auto;
             max-width: 960px;
-            text-align: center;
+            text-align: left;
             line-height: 1.5;
-            padding: 10px 12px 18px 12px;
+            padding: 0 12px 18px 12px;
+        }
+        .legal-box details {
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 8px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .legal-box summary {
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-<!-- HEADER MIT LOGO NEUTRAL -->
 <header class="header">
     <div class="header-inner">
-        <!-- wichtig: Bild-Datei im Projektordner ablegen -->
         <img src="food-drinks-logo.png" alt="Food & Drinks Logo" class="header-logo">
         <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
     </div>
@@ -234,17 +318,15 @@
 
         <!-- 5 JANELAS -->
         <div class="tabs">
-            <button class="tab-btn active" data-group="portions">Portionen</button>
-            <button class="tab-btn" data-group="kids">Kinder</button>
-            <button class="tab-btn" data-group="eis">Eisbecher & Spaghetti</button>
-            <button class="tab-btn" data-group="food">Snacks & Waffeln</button>
-            <button class="tab-btn" data-group="drinks">Getränke</button>
+            <button class="tab-btn tab-portions active" data-group="portions">Portionen</button>
+            <button class="tab-btn tab-kids" data-group="kids">Kinder</button>
+            <button class="tab-btn tab-eis" data-group="eis">Eisbecher & Spaghetti</button>
+            <button class="tab-btn tab-food" data-group="food">Snacks & Waffeln</button>
+            <button class="tab-btn tab-drinks" data-group="drinks">Getränke</button>
         </div>
 
         <label for="produkt">Produkt:</label>
-        <select id="produkt">
-            <!-- Optionen werden per JavaScript gefüllt -->
-        </select>
+        <select id="produkt"></select>
 
         <!-- Sortenwahl nur für Portionen (optional) -->
         <div id="geschmack-box" style="margin-top:12px; display:none;">
@@ -257,7 +339,7 @@
             </div>
         </div>
 
-        <!-- Sahne-Option (nur bei Eis-Artikeln angezeigt) -->
+        <!-- Sahne-Option -->
         <div id="sahne-box" style="margin-top:8px; display:none;">
             <label for="sahne">Sahne:</label>
             <select id="sahne">
@@ -299,34 +381,74 @@
         </div>
     </div>
 
+    <!-- CHEF LOGIN -->
+    <div class="card" id="admin-login-card">
+        <h2 class="section-title">Chef-Bereich</h2>
+        <p class="small">
+            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert.
+        </p>
+        <label for="admin-password">Chef-Passwort:</label>
+        <input id="admin-password" type="password" placeholder="Passwort eingeben">
+        <button class="btn" onclick="adminLogin()">Chef-Login</button>
+    </div>
+
+    <!-- CHEF PANEL -->
+    <div class="card" id="admin-panel" style="display:none;">
+        <div class="admin-header">
+            <h2 class="section-title" style="margin-bottom:0;">Gespeicherte Bestellungen</h2>
+            <button class="btn-logout" onclick="adminLogout()">Logout</button>
+        </div>
+        <div class="small" style="margin-top:4px;">
+            Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder gedruckt wurden.
+            Der Chef kann einzelne Bestellungen oder alle Einträge löschen.
+        </div>
+        <div id="admin-orders-list" style="margin-top:10px;"></div>
+        <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
+            Alle Bestellungen löschen
+        </button>
+    </div>
+
 </div>
 
-<!-- RECHTLICHER HINWEIS -->
+<!-- RECHTLICHER HINWEIS (jetzt einklappbar) -->
 <div class="legal-box">
-    <strong>Rechtlicher Hinweis:</strong><br>
-    Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
-    Registrierkasse oder steuerrechtlich relevante Aufzeichnung.<br><br>
-    Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
-    aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
-    Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.<br><br>
-    Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
-    Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
-    und darf nicht als Kassensystem verwendet werden.<br><br>
-    Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
-    dieses Systems.
+    <details>
+        <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
+        <p>
+            Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
+            Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
+        </p>
+        <p>
+            Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
+            aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
+            Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
+        </p>
+        <p>
+            Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
+            Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
+            und darf nicht als Kassensystem verwendet werden.
+        </p>
+        <p>
+            Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
+            dieses Systems.
+        </p>
+    </details>
 </div>
 
 <script>
 const WHATSAPP_NUMMER = "4917672809926";
 
-/* Koordinaten deines Cafés (anpassen falls nötig) – Bad Berleburg ungefähr */
+/* Chef Passwort – MUDA AQUI PARA O QUE QUISERES */
+const ADMIN_PASSWORD = "chef123";
+
 const CAFE_LAT = 51.051;
 const CAFE_LNG = 8.392;
-const MAX_DIST_KM = 1.5;      // maximaler Abstand, z.B. 1,5 km
+const MAX_DIST_KM = 1.5;
 
 let gpsOk = false;
+let adminOrders = [];
+let isAdmin = false;
 
-// Produktdaten KOMPLETT
 const PRODUKTE = {
     23: { name: "23. Kinder Portion (2 Kugeln)", preis: 3.50, type: "cup3" },
     24: { name: "24. Kleine Portion (3 Kugeln)", preis: 5.00, type: "cup3" },
@@ -512,7 +634,6 @@ const PRODUKTE = {
     638:{ name: "630h. Waffel Tutti Frutti", preis: 7.50, type: "normal" }
 };
 
-// Sortenliste (optional für Portionen)
 const SORTEN = [
     "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
     "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
@@ -520,7 +641,6 @@ const SORTEN = [
     "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
 ];
 
-// Produkte mit optionaler Sahne-Auswahl
 const SAHNE_PRODUKTE = new Set([
     23, 24, 25, 26,
     30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
@@ -540,7 +660,6 @@ const SAHNE_PRODUKTE = new Set([
     631,632,633,634,635,636,637,638
 ]);
 
-/* GRUPPEN FÜR DIE 5 JANELAS */
 const GROUPS = {
     portions: [23,24,25,26],
     kids: [23,160,161,162,163,164,130,154,150,151,152,153],
@@ -578,7 +697,7 @@ const GROUPS = {
 let warenkorb = [];
 let currentGroup = "portions";
 
-// Tische 1–33 füllen
+/* Tische */
 const tischSelect = document.getElementById("tisch");
 for (let i = 1; i <= 33; i++) {
     const opt = document.createElement("option");
@@ -587,7 +706,7 @@ for (let i = 1; i <= 33; i++) {
     tischSelect.appendChild(opt);
 }
 
-// Sorten-Selects füllen
+/* Sorten */
 function fillSortenSelect(id) {
     const sel = document.getElementById(id);
     sel.innerHTML = "<option value=''>Sorte wählen…</option>";
@@ -600,7 +719,7 @@ function fillSortenSelect(id) {
 }
 ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
-// Produkt-Select für aktuelle Gruppe aufbauen
+/* Produkt-Select je Gruppe */
 function buildProduktSelect(group) {
     const select = document.getElementById("produkt");
     select.innerHTML = "<option value=''>Bitte wählen…</option>";
@@ -610,12 +729,10 @@ function buildProduktSelect(group) {
         if (!p) return;
         const opt = document.createElement("option");
         opt.value = id;
-        opt.textContent =
-            p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
+        opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
         select.appendChild(opt);
     });
 
-    // Boxen verstecken & Felder leeren
     document.getElementById("geschmack-box").style.display = "none";
     document.getElementById("sahne-box").style.display = "none";
     ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
@@ -625,7 +742,7 @@ function buildProduktSelect(group) {
     document.getElementById("bemerkung").value = "";
 }
 
-// Tabs aktivieren
+/* Tabs */
 document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         currentGroup = btn.dataset.group;
@@ -634,11 +751,9 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
         buildProduktSelect(currentGroup);
     });
 });
-
-// Beim Laden erste Gruppe füllen
 buildProduktSelect(currentGroup);
 
-// Produktwechsel: Sorten-Box und Sahne-Box anzeigen/verstecken
+/* Produktwechsel */
 document.getElementById("produkt").addEventListener("change", function() {
     const wert = this.value;
     const geschmackBox = document.getElementById("geschmack-box");
@@ -671,6 +786,7 @@ document.getElementById("produkt").addEventListener("change", function() {
     }
 });
 
+/* Warenkorb */
 function addToCart() {
     const tisch = document.getElementById("tisch").value;
     if (!tisch) {
@@ -776,6 +892,7 @@ function removeItem(index) {
     updateCart();
 }
 
+/* Texto da encomenda */
 function buildOrderText() {
     const tisch = document.getElementById("tisch").value || "-";
     let total = 0;
@@ -800,6 +917,16 @@ function buildOrderText() {
     return text;
 }
 
+/* Guardar pedido para o chefe */
+function storeOrder(channel) {
+    const tisch = document.getElementById("tisch").value || "-";
+    const textPlain = buildOrderText();
+    const timestamp = new Date().toLocaleString("de-DE");
+    adminOrders.push({ tisch, channel, text: textPlain, time: timestamp });
+    if (isAdmin) updateAdminList();
+}
+
+/* WhatsApp */
 function sendWhatsApp() {
     if (!gpsOk) {
         alert("Bestellung nur vor Ort möglich. Bitte Standort-Freigabe erlauben.");
@@ -816,6 +943,7 @@ function sendWhatsApp() {
         return;
     }
 
+    storeOrder("WhatsApp");
     const text = encodeURIComponent(buildOrderText());
     const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
     window.open(url, "_blank");
@@ -824,13 +952,16 @@ function sendWhatsApp() {
     updateCart();
 }
 
+/* Drucker */
 function printOrder() {
     if (warenkorb.length === 0) {
         alert("Der Warenkorb ist leer.");
         return;
     }
     const tisch = document.getElementById("tisch").value || "-";
-    const text = buildOrderText().replace(/\n/g, "<br>");
+    const textHtml = buildOrderText().replace(/\n/g, "<br>");
+
+    storeOrder("Drucker");
 
     const win = window.open("", "_blank");
     win.document.open();
@@ -842,7 +973,7 @@ function printOrder() {
         </head>
         <body style="font-family:Arial,sans-serif; font-size:14px;">
             <h2>Bestellung Tisch ${tisch}</h2>
-            <p>${text}</p>
+            <p>${textHtml}</p>
         </body>
         </html>
     `);
@@ -850,6 +981,7 @@ function printOrder() {
     win.print();
 }
 
+/* Reset */
 function resetTable() {
     if (!confirm("Möchten Sie den Tisch wirklich zurücksetzen? Alle Bestellungen werden gelöscht.")) {
         return;
@@ -875,11 +1007,8 @@ function resetTable() {
     document.getElementById("bemerkung").value = "";
 }
 
-/* ---------- GPS-FUNKTIONEN ---------- */
-
-function deg2rad(deg) {
-    return deg * (Math.PI / 180);
-}
+/* GPS */
+function deg2rad(deg) { return deg * (Math.PI / 180); }
 
 function distanceKm(lat1, lon1, lat2, lon2) {
     const R = 6371;
@@ -925,6 +1054,58 @@ function initLocation() {
             btnWpp.disabled = true;
         }
     );
+}
+
+/* Chef-Login & Admin-Panel */
+function adminLogin() {
+    const pw = document.getElementById("admin-password").value;
+    if (pw === ADMIN_PASSWORD) {
+        isAdmin = true;
+        document.getElementById("admin-login-card").style.display = "none";
+        document.getElementById("admin-panel").style.display = "block";
+        updateAdminList();
+    } else {
+        alert("Falsches Passwort.");
+    }
+}
+
+function adminLogout() {
+    isAdmin = false;
+    document.getElementById("admin-panel").style.display = "none";
+    document.getElementById("admin-login-card").style.display = "block";
+    document.getElementById("admin-password").value = "";
+}
+
+function updateAdminList() {
+    const list = document.getElementById("admin-orders-list");
+    list.innerHTML = "";
+    if (adminOrders.length === 0) {
+        list.innerHTML = "<div class='small'>Noch keine Bestellungen gespeichert.</div>";
+        return;
+    }
+
+    adminOrders.forEach((o, idx) => {
+        const div = document.createElement("div");
+        div.className = "admin-order";
+        div.innerHTML = `
+            <strong>${o.time}</strong> – Tisch ${o.tisch} (${o.channel})<br>
+            ${o.text.replace(/\n/g,"<br>")}
+            <br>
+            <button class="btn-small" onclick="deleteOrder(${idx})">Löschen</button>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function deleteOrder(index) {
+    adminOrders.splice(index, 1);
+    updateAdminList();
+}
+
+function clearAllOrders() {
+    if (!confirm("Alle gespeicherten Bestellungen wirklich löschen?")) return;
+    adminOrders = [];
+    updateAdminList();
 }
 
 window.addEventListener("load", initLocation);
