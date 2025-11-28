@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -39,7 +40,9 @@
             padding: 0 10px;
         }
         .header-logo {
-            height: 55px;
+            max-width: 100%;
+            max-height: 80px;
+            height: auto;
             width: auto;
             object-fit: contain;
         }
@@ -57,9 +60,6 @@
             }
             .header-title {
                 font-size: 18px;
-            }
-            .header-logo {
-                height: 45px;
             }
         }
 
@@ -163,11 +163,33 @@
             color: #666;
             margin-top: 3px;
         }
-        optgroup {
-            font-style: normal;
-            font-weight: bold;
-            color: #444;
-            background: #f7f7f7;
+
+        /* TABS / JANELAS */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .tab-btn {
+            flex: 1 1 auto;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 999px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        @media (max-width: 600px) {
+            .tab-btn {
+                font-size: 12px;
+                padding: 6px;
+            }
         }
 
         /* Rechtlicher Hinweis */
@@ -188,7 +210,7 @@
 <!-- HEADER MIT LOGO NEUTRAL -->
 <header class="header">
     <div class="header-inner">
-        <!-- Logo-Datei muss im gleichen Ordner wie index.html liegen -->
+        <!-- wichtig: Bild-Datei im Projektordner ablegen -->
         <img src="food-drinks-logo.png" alt="Food & Drinks Logo" class="header-logo">
         <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
     </div>
@@ -210,219 +232,18 @@
     <div class="card">
         <h2 class="section-title">Produkt wählen</h2>
 
+        <!-- 5 JANELAS -->
+        <div class="tabs">
+            <button class="tab-btn active" data-group="portions">Portionen</button>
+            <button class="tab-btn" data-group="kids">Kinder</button>
+            <button class="tab-btn" data-group="eis">Eisbecher & Spaghetti</button>
+            <button class="tab-btn" data-group="food">Snacks & Waffeln</button>
+            <button class="tab-btn" data-group="drinks">Getränke</button>
+        </div>
+
         <label for="produkt">Produkt:</label>
         <select id="produkt">
-            <option value="">Bitte wählen…</option>
-
-            <optgroup label="Portionen (Sorten optional)">
-                <option value="23">23. Kinder Portion (2 Kugeln) – 3,50 €</option>
-                <option value="24">24. Kleine Portion (3 Kugeln) – 5,00 €</option>
-                <option value="25">25. Normale Portion (4 Kugeln) – 6,50 €</option>
-                <option value="26">26. Große Portion (6 Kugeln) – 9,50 €</option>
-            </optgroup>
-
-            <optgroup label="Eisbecher">
-                <option value="30">30. Amarena Becher – 8,50 €</option>
-                <option value="31">31. Erdbeer Becher – 8,50 €</option>
-                <option value="32">32. Banana Cup – 9,00 €</option>
-                <option value="33">33. Liebes Traum – 13,50 €</option>
-                <option value="34">34. Kiwi Becher – 8,50 €</option>
-                <option value="35">35. Frucht Becher – 8,50 €</option>
-                <option value="36">36. Großer Frucht Becher – 11,90 €</option>
-                <option value="37">37. Großer Amarena Becher – 12,50 €</option>
-                <option value="38">38. Großer Erdbeer Becher – 12,50 €</option>
-                <option value="39">39. Erdbeer-Banane Becher – 10,90 €</option>
-                <option value="40">40. Exotischer Becher – 12,00 €</option>
-                <option value="41">41. Wald Becher – 10,50 €</option>
-                <option value="42">42. Bella Italia – 11,00 €</option>
-                <option value="43">43. Mango Becher – 9,00 €</option>
-                <option value="44">44. Banana Split – 10,00 €</option>
-                <option value="45">45. Sommer Becher – 13,00 €</option>
-                <option value="46">46. Coppa Melone – 9,50 €</option>
-                <option value="47">47. Heidelbeer Becher – 9,50 €</option>
-                <option value="48">48. Himbeer Becher – 9,50 €</option>
-
-                <option value="81">81. Heiße Kirschen – 8,50 €</option>
-                <option value="82">82. Heiße Himbeeren – 9,00 €</option>
-                <option value="83">83. Zimt Becher – 8,50 €</option>
-                <option value="84">84. Cup Dänemark – 8,50 €</option>
-                <option value="85">85. Wiener Mokka – 8,50 €</option>
-
-                <option value="90">90. Amaretto Becher – 8,50 €</option>
-                <option value="91">91. Schwarzwald Becher – 9,00 €</option>
-                <option value="92">92. Malaga Becher – 9,00 €</option>
-                <option value="93">93. Mon Chéri Becher – 9,50 €</option>
-                <option value="94">94. Raffaello Becher – 9,50 €</option>
-                <option value="96">96. Eierlikör Becher – 8,50 €</option>
-                <option value="98">98. Nuss Becher – 9,50 €</option>
-                <option value="99">99. Rocher Becher – 9,50 €</option>
-                <option value="100">100. Giotto Becher – 9,00 €</option>
-                <option value="101">101. Berg Becher – 10,50 €</option>
-                <option value="102">102. Walnuss Becher – 9,50 €</option>
-                <option value="103">103. Coppa Delizia – 10,90 €</option>
-
-                <option value="110">110. After Eight Becher – 8,90 €</option>
-                <option value="111">111. Stracciatella Becher – 7,90 €</option>
-                <option value="112">112. Tartufo Nero – 9,50 €</option>
-                <option value="113">113. Tartufo Bianco – 9,50 €</option>
-                <option value="114">114. Hausbecher – 20,00 €</option>
-                <option value="116">116. Krokant Becher – 8,50 €</option>
-                <option value="117">117. Schoko Becher – 8,50 €</option>
-                <option value="118">118. Schoko Becher groß – 12,00 €</option>
-                <option value="122">122. Pistazien Becher – 11,50 €</option>
-            </optgroup>
-
-            <optgroup label="Spaghetti Eis & Pizza Eis">
-                <option value="50">50. Spaghetti Eis – 6,50 €</option>
-                <option value="51">51. Spaghetti Eis groß – 9,50 €</option>
-                <option value="52">52. Spaghetti Vanille – 7,40 €</option>
-                <option value="53">53. Spaghetti Erdbeere – 8,90 €</option>
-                <option value="54">54. Spaghetti Kiwi – 8,50 €</option>
-                <option value="55">55. Spaghetti Vanille-Schoko – 7,50 €</option>
-                <option value="56">56. Spaghetti Carbonara – 9,50 €</option>
-                <option value="57">57. Spaghetti Nussknacker – 9,50 €</option>
-                <option value="58">58. Spaghetti Amarena – 8,90 €</option>
-                <option value="59">59. Spaghetti Waldfrüchte – 8,90 €</option>
-                <option value="60">60. Spaghetti Melone – 8,90 €</option>
-                <option value="61">61. Spaghetti Tutti Frutti – 8,90 €</option>
-                <option value="62">62. Lasagne Eis – 8,90 €</option>
-
-                <option value="63">63. Pizza Margherita – 9,00 €</option>
-                <option value="64">64. Pizza Grandiosa – 12,00 €</option>
-            </optgroup>
-
-            <optgroup label="Joghurt Becher">
-                <option value="70">70. Mixgetränk Spezial – 6,50 €</option>
-                <option value="71">71. Joghurrette Becher – 9,50 €</option>
-                <option value="72">72. Joghurt Cocktail – 9,50 €</option>
-                <option value="73">73. Joghurt Kiwi – 9,00 €</option>
-                <option value="74">74. Joghurt Erdbeere – 9,00 €</option>
-                <option value="75">75. Joghurt Ananas – 9,00 €</option>
-                <option value="76">76. Müsli Joghurt Becher – 9,00 €</option>
-                <option value="77">77. Joghurt Heidelbeere – 9,00 €</option>
-                <option value="78">78. Joghurt Banane – 9,00 €</option>
-                <option value="79">79. Joghurt Amarena – 9,00 €</option>
-                <option value="80">80. Joghurt Himbeere – 9,00 €</option>
-            </optgroup>
-
-            <optgroup label="Donuts Eis">
-                <option value="160">Erdbeer Donut – 6,90 €</option>
-                <option value="161">Schoko Donut – 6,90 €</option>
-                <option value="162">Caramel Donut – 6,90 €</option>
-                <option value="163">Pistazien Donut – 7,20 €</option>
-                <option value="164">Kinder Donut – 6,50 €</option>
-            </optgroup>
-
-            <optgroup label="Eisgetränke & Cocktails">
-                <option value="130">130. Flipper – 5,00 €</option>
-                <option value="131">131. Bellini – 6,00 €</option>
-                <option value="132">132. Mimosa – 6,00 €</option>
-                <option value="133">133. Formula 1 – 6,00 €</option>
-                <option value="134">134. Formula 2 – 6,00 €</option>
-
-                <option value="140">140. Eiskaffee – 5,50 €</option>
-                <option value="141">141. Eisschokolade – 5,50 €</option>
-                <option value="142">142. Eis-Cappuccino – 5,50 €</option>
-
-                <option value="150">150. Milch-Mix 0,3 l – 4,00 €</option>
-                <option value="151">151. Milchshake 0,3 l – 4,60 €</option>
-                <option value="152">152. Riesen Milch-Mix 0,5 l – 5,00 €</option>
-                <option value="153">153. Riesen Milchshake 0,5 l – 5,50 €</option>
-                <option value="154">154. Vulcano – 3,70 €</option>
-                <option value="155">155. Orangensaft (frisch) – 4,50 €</option>
-                <option value="156">156. Kalte Zitrone – 3,50 €</option>
-            </optgroup>
-
-            <optgroup label="Kaffee & Heißgetränke (Auswahl)">
-                <option value="200">Espresso – 2,00 €</option>
-                <option value="201">Espresso Macchiato – 2,30 €</option>
-                <option value="202">Espresso Corretto – 3,40 €</option>
-                <option value="203">Doppelter Espresso – 3,60 €</option>
-                <option value="204">Doppelter Espresso Macchiato – 3,80 €</option>
-                <option value="210">Kaffee – 2,20 €</option>
-                <option value="220">Milchkaffee – 3,00 €</option>
-                <option value="221">Milchkaffee mit Baileys – 4,00 €</option>
-                <option value="230">Latte Macchiato – 3,60 €</option>
-                <option value="231">Latte Macchiato mit Sirup – 3,20 €</option>
-                <option value="240">Cappuccino – 2,60 €</option>
-                <option value="241">Cappuccino groß – 3,00 €</option>
-                <option value="244">Cappuccino mit Amaretto – 4,00 €</option>
-                <option value="245">Cappuccino mit Eierlikör – 4,00 €</option>
-                <option value="246">Cappuccino mit Baileys – 4,00 €</option>
-            </optgroup>
-
-            <optgroup label="Kalte Getränke">
-                <option value="300">Coca-Cola 0,2 l – 2,70 €</option>
-                <option value="301">Coca-Cola Light 0,2 l – 2,70 €</option>
-                <option value="302">Coca-Cola Zero 0,2 l – 2,70 €</option>
-                <option value="303">Fanta 0,2 l – 2,70 €</option>
-                <option value="304">Mezzo Mix 0,2 l – 2,70 €</option>
-                <option value="305">Sprite 0,2 l – 2,70 €</option>
-                <option value="306">Bitter Lemon 0,2 l – 2,70 €</option>
-                <option value="307">Apfelschorle – 1,90 €</option>
-                <option value="308">Eistee – 1,90 €</option>
-                <option value="309">Wild Berry – 2,20 €</option>
-                <option value="310">Tonic Water – 2,20 €</option>
-                <option value="311">S.Pellegrino 0,25 l – 2,40 €</option>
-                <option value="312">S.Pellegrino 0,75 l – 5,90 €</option>
-            </optgroup>
-
-            <optgroup label="Bier, Wein & Aperitif">
-                <option value="350">Krombacher Pils 0,33 l – 2,80 €</option>
-                <option value="351">Krombacher Radler 0,33 l – 2,80 €</option>
-                <option value="352">Erdinger Weißbier 0,5 l – 4,50 €</option>
-                <option value="353">Erdinger Alkoholfrei 0,33 l – 2,80 €</option>
-                <option value="354">Erdinger Alkoholfrei 0,5 l – 4,50 €</option>
-
-                <option value="400">Rotwein trocken 0,2 l – 4,90 €</option>
-                <option value="401">Weißwein trocken 0,2 l – 4,90 €</option>
-                <option value="402">Glas Sekt – 3,90 €</option>
-                <option value="403">Campari Sekt – 3,90 €</option>
-
-                <option value="410">Aperitif Rosato – 5,90 €</option>
-                <option value="430">Grappa – 4,70 €</option>
-                <option value="431">Asbach – 3,20 €</option>
-                <option value="432">Ramazzotti – 3,20 €</option>
-                <option value="433">Aperol – 6,10 €</option>
-                <option value="434">Hugo – 6,10 €</option>
-            </optgroup>
-
-            <optgroup label="Snacks & Herzhaftes">
-                <option value="500">Flammkuchen Elsässer Art – 8,90 €</option>
-                <option value="501">Flammkuchen Wildlachs & Shrimps – 8,90 €</option>
-                <option value="502">Flammkuchen Griechische Art – 8,90 €</option>
-
-                <option value="510">Toast mit Käse – 3,70 €</option>
-                <option value="511">Toast mit Käse & Schinken – 4,30 €</option>
-                <option value="512">Toast mit Salami & Käse – 4,30 €</option>
-                <option value="513">Toast Hawaii – 5,60 €</option>
-
-                <option value="520">Baguette XXL (Salami/Schinken/Caprese) – 6,90 €</option>
-            </optgroup>
-
-            <optgroup label="Desserts & Waffeln">
-                <option value="600">Apfelstrudel – 3,70 €</option>
-                <option value="601">Apfelstrudel mit Vanillesoße – 4,00 €</option>
-                <option value="602">Apfelstrudel mit Sahne – 4,70 €</option>
-                <option value="603">Apfelstrudel mit Eis – 6,10 €</option>
-                <option value="610">Hausgemachtes Tiramisu – 4,20 €</option>
-
-                <option value="620">Waffel mit Puderzucker – 4,00 €</option>
-                <option value="621">Waffel mit Sahne – 5,00 €</option>
-                <option value="622">Waffel mit Eis – 5,30 €</option>
-                <option value="623">Waffel mit Eis & Sahne – 6,30 €</option>
-                <option value="624">Waffel mit Nutella – 5,00 €</option>
-
-                <option value="631">630a. Waffel Zimt & Banane – 6,80 €</option>
-                <option value="632">630b. Waffel Obstsalat – 7,90 €</option>
-                <option value="633">630c. Waffel Erdbeeren – 7,50 €</option>
-                <option value="634">630d. Waffel Waldbeeren – 7,20 €</option>
-                <option value="635">630e. Waffel Schoko-Banane – 7,90 €</option>
-                <option value="636">630f. Waffel Heiße Kirschen – 7,00 €</option>
-                <option value="637">630g. Waffel Schoko – 6,80 €</option>
-                <option value="638">630h. Waffel Tutti Frutti – 7,50 €</option>
-            </optgroup>
-
+            <!-- Optionen werden per JavaScript gefüllt -->
         </select>
 
         <!-- Sortenwahl nur für Portionen (optional) -->
@@ -465,12 +286,16 @@
             Bestellung per WhatsApp senden 📲
         </button>
 
-        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
-            Tisch löschen / Neue Gäste
+        <button id="btn-print" class="btn" style="margin-top:8px; background:#007b83;" onclick="printOrder()" disabled>
+            Bestellung drucken 🖨️
         </button>
 
-        <div class="small" style="margin-top:6px;">
-            Nach dem Senden bleibt der Tisch gespeichert. Neue Gäste bitte mit „Tisch löschen / Neue Gäste“ starten.
+        <button class="btn" style="margin-top:8px; background:#555;" onclick="resetTable()">
+            Tisch löschen / neue Gäste
+        </button>
+
+        <div class="small" style="margin-top:6px;" id="gps-info">
+            GPS wird geprüft… bitte Standort-Freigabe erlauben.
         </div>
     </div>
 
@@ -494,7 +319,14 @@
 <script>
 const WHATSAPP_NUMMER = "4917672809926";
 
-// Produktdaten
+/* Koordinaten deines Cafés (anpassen falls nötig) – Bad Berleburg ungefähr */
+const CAFE_LAT = 51.051;
+const CAFE_LNG = 8.392;
+const MAX_DIST_KM = 1.5;      // maximaler Abstand, z.B. 1,5 km
+
+let gpsOk = false;
+
+// Produktdaten KOMPLETT
 const PRODUKTE = {
     23: { name: "23. Kinder Portion (2 Kugeln)", preis: 3.50, type: "cup3" },
     24: { name: "24. Kleine Portion (3 Kugeln)", preis: 5.00, type: "cup3" },
@@ -682,27 +514,10 @@ const PRODUKTE = {
 
 // Sortenliste (optional für Portionen)
 const SORTEN = [
-    "Vanille",
-    "Amarena",
-    "Joghurt",
-    "Nuss",
-    "Schokolade",
-    "Stracciatella",
-    "After Eight",
-    "Schlumpfeis",
-    "Malaga",
-    "Walnuss",
-    "Cookies",
-    "Zitrone",
-    "Erdbeere",
-    "Mango",
-    "Banane",
-    "Himbeere",
-    "Limette",
-    "Dunkle Schokolade",
-    "Paw Patrol",
-    "Snickers",
-    "Pistazien"
+    "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
+    "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
+    "Erdbeere","Mango","Banane","Himbeere","Limette",
+    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
 ];
 
 // Produkte mit optionaler Sahne-Auswahl
@@ -725,7 +540,43 @@ const SAHNE_PRODUKTE = new Set([
     631,632,633,634,635,636,637,638
 ]);
 
+/* GRUPPEN FÜR DIE 5 JANELAS */
+const GROUPS = {
+    portions: [23,24,25,26],
+    kids: [23,160,161,162,163,164,130,154,150,151,152,153],
+    eis: [
+        30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
+        50,51,52,53,54,55,56,57,58,59,60,61,62,
+        70,71,72,73,74,75,76,77,78,79,80,
+        81,82,83,84,85,
+        90,91,92,93,94,96,98,99,100,101,102,103,
+        110,111,112,113,114,116,117,118,122
+    ],
+    food: [
+        500,501,502,
+        510,511,512,513,
+        520,
+        600,601,602,603,
+        610,
+        620,621,622,623,624,
+        631,632,633,634,635,636,637,638
+    ],
+    drinks: [
+        140,141,142,
+        150,151,152,153,154,155,156,
+        200,201,202,203,204,
+        210,220,221,
+        230,231,
+        240,241,244,245,246,
+        300,301,302,303,304,305,306,307,308,309,310,311,312,
+        350,351,352,353,354,
+        400,401,402,403,410,
+        430,431,432,433,434
+    ]
+};
+
 let warenkorb = [];
+let currentGroup = "portions";
 
 // Tische 1–33 füllen
 const tischSelect = document.getElementById("tisch");
@@ -749,6 +600,44 @@ function fillSortenSelect(id) {
 }
 ["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
+// Produkt-Select für aktuelle Gruppe aufbauen
+function buildProduktSelect(group) {
+    const select = document.getElementById("produkt");
+    select.innerHTML = "<option value=''>Bitte wählen…</option>";
+    const ids = GROUPS[group] || [];
+    ids.forEach(id => {
+        const p = PRODUKTE[id];
+        if (!p) return;
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent =
+            p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
+        select.appendChild(opt);
+    });
+
+    // Boxen verstecken & Felder leeren
+    document.getElementById("geschmack-box").style.display = "none";
+    document.getElementById("sahne-box").style.display = "none";
+    ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
+        document.getElementById(id).value = "";
+    });
+    document.getElementById("sahne").value = "";
+    document.getElementById("bemerkung").value = "";
+}
+
+// Tabs aktivieren
+document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        currentGroup = btn.dataset.group;
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        buildProduktSelect(currentGroup);
+    });
+});
+
+// Beim Laden erste Gruppe füllen
+buildProduktSelect(currentGroup);
+
 // Produktwechsel: Sorten-Box und Sahne-Box anzeigen/verstecken
 document.getElementById("produkt").addEventListener("change", function() {
     const wert = this.value;
@@ -764,7 +653,6 @@ document.getElementById("produkt").addEventListener("change", function() {
 
     const idNum = parseInt(wert, 10);
 
-    // Sorten nur bei Portionen
     if (PRODUKTE[wert].type === "cup3") {
         geschmackBox.style.display = "block";
     } else {
@@ -775,7 +663,6 @@ document.getElementById("produkt").addEventListener("change", function() {
         });
     }
 
-    // Sahne nur bei Artikeln mit Eis/Sahne
     if (SAHNE_PRODUKTE.has(idNum)) {
         sahneBox.style.display = "block";
     } else {
@@ -801,7 +688,6 @@ function addToCart() {
     let sorten = [];
     const bemerkung = document.getElementById("bemerkung").value.trim();
 
-    // Sorten nur bei Portionen
     if (produkt.type === "cup3") {
         const s1 = document.getElementById("geschmack1").value;
         const s2 = document.getElementById("geschmack2").value;
@@ -811,7 +697,6 @@ function addToCart() {
         if (s3) sorten.push(s3);
     }
 
-    // Sahne nur bei Produkten mit Eis/Sahne
     let sahne = "";
     const idNum = parseInt(produktId, 10);
     if (SAHNE_PRODUKTE.has(idNum)) {
@@ -828,7 +713,6 @@ function addToCart() {
         sahne: sahne
     });
 
-    // Eingaben leeren
     document.getElementById("bemerkung").value = "";
     if (produkt.type === "cup3") {
         ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
@@ -845,6 +729,7 @@ function updateCart() {
     const liste = document.getElementById("liste-items");
     const totalDiv = document.getElementById("gesamt");
     const btnWpp = document.getElementById("btn-whatsapp");
+    const btnPrint = document.getElementById("btn-print");
 
     liste.innerHTML = "";
     let total = 0;
@@ -881,7 +766,9 @@ function updateCart() {
     });
 
     totalDiv.textContent = "Gesamt: " + total.toFixed(2).replace(".", ",") + " €";
-    btnWpp.disabled = warenkorb.length === 0;
+    const hasItems = warenkorb.length > 0;
+    btnWpp.disabled = !hasItems || !gpsOk;
+    btnPrint.disabled = !hasItems;
 }
 
 function removeItem(index) {
@@ -889,19 +776,10 @@ function removeItem(index) {
     updateCart();
 }
 
-function sendWhatsApp() {
-    const tisch = document.getElementById("tisch").value;
-    if (!tisch) {
-        alert("Bitte zuerst den Tisch auswählen.");
-        return;
-    }
-    if (warenkorb.length === 0) {
-        alert("Der Warenkorb ist leer.");
-        return;
-    }
-
+function buildOrderText() {
+    const tisch = document.getElementById("tisch").value || "-";
     let total = 0;
-    let text = `Tisch ${tisch} - Bestellung:%0A`;
+    let text = `Tisch ${tisch} - Bestellung:\n`;
 
     warenkorb.forEach(item => {
         total += item.preis;
@@ -915,17 +793,61 @@ function sendWhatsApp() {
         if (item.sahne) {
             line += ` – Sahne: ${item.sahne}`;
         }
-        text += line + "%0A";
+        text += line + "\n";
     });
 
-    text += `%0AGesamtbetrag: ${total.toFixed(2)} €`;
+    text += `\nGesamtbetrag: ${total.toFixed(2)} €`;
+    return text;
+}
 
+function sendWhatsApp() {
+    if (!gpsOk) {
+        alert("Bestellung nur vor Ort möglich. Bitte Standort-Freigabe erlauben.");
+        return;
+    }
+
+    const tisch = document.getElementById("tisch").value;
+    if (!tisch) {
+        alert("Bitte zuerst den Tisch auswählen.");
+        return;
+    }
+    if (warenkorb.length === 0) {
+        alert("Der Warenkorb ist leer.");
+        return;
+    }
+
+    const text = encodeURIComponent(buildOrderText());
     const url = `https://wa.me/${WHATSAPP_NUMMER}?text=${text}`;
     window.open(url, "_blank");
 
-    // Nach dem Senden: Warenkorb leeren, Tisch bleibt erhalten
     warenkorb = [];
     updateCart();
+}
+
+function printOrder() {
+    if (warenkorb.length === 0) {
+        alert("Der Warenkorb ist leer.");
+        return;
+    }
+    const tisch = document.getElementById("tisch").value || "-";
+    const text = buildOrderText().replace(/\n/g, "<br>");
+
+    const win = window.open("", "_blank");
+    win.document.open();
+    win.document.write(`
+        <html>
+        <head>
+            <title>Bestellung Tisch ${tisch}</title>
+            <meta charset="UTF-8">
+        </head>
+        <body style="font-family:Arial,sans-serif; font-size:14px;">
+            <h2>Bestellung Tisch ${tisch}</h2>
+            <p>${text}</p>
+        </body>
+        </html>
+    `);
+    win.document.close();
+    win.print();
 }
 
 function resetTable() {
@@ -952,6 +874,60 @@ function resetTable() {
 
     document.getElementById("bemerkung").value = "";
 }
+
+/* ---------- GPS-FUNKTIONEN ---------- */
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}
+
+function distanceKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+function initLocation() {
+    const info = document.getElementById("gps-info");
+    const btnWpp = document.getElementById("btn-whatsapp");
+
+    if (!navigator.geolocation) {
+        info.textContent = "GPS nicht verfügbar – Bestellung per WhatsApp ist deaktiviert.";
+        gpsOk = false;
+        btnWpp.disabled = true;
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            const dist = distanceKm(lat, lng, CAFE_LAT, CAFE_LNG);
+
+            if (dist <= MAX_DIST_KM) {
+                gpsOk = true;
+                info.textContent = "Standort OK – Bestellung per WhatsApp ist möglich.";
+            } else {
+                gpsOk = false;
+                info.textContent = "Sie sind zu weit vom Standort entfernt – Bestellung per WhatsApp nicht möglich.";
+            }
+            updateCart();
+        },
+        (err) => {
+            gpsOk = false;
+            info.textContent = "Standort konnte nicht bestimmt werden – bitte GPS erlauben.";
+            btnWpp.disabled = true;
+        }
+    );
+}
+
+window.addEventListener("load", initLocation);
 </script>
 
 </body>
