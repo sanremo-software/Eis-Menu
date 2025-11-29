@@ -268,16 +268,45 @@
             background: #b71c1c;
         }
 
-        /* Rechtlicher Hinweis – só para o chefe (inicialmente escondido) */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        .admin-table th,
+        .admin-table td {
+            border-bottom: 1px solid #eee;
+            padding: 4px 3px;
+            vertical-align: middle;
+        }
+        .admin-table input[type="text"],
+        .admin-table input[type="number"],
+        .admin-table select {
+            width: 100%;
+            font-size: 11px;
+            padding: 3px 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .admin-table input[type="checkbox"] {
+            transform: scale(1.1);
+        }
+
+        .admin-subtitle {
+            font-size: 13px;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        /* Rechtlicher Hinweis – só no Chef-Panel */
         .legal-box {
             font-size: 11px;
             color: #777;
-            margin: 10px auto 0 auto;
-            max-width: 960px;
+            margin-top: 12px;
             text-align: left;
             line-height: 1.5;
-            padding: 0 12px 18px 12px;
-            display: none;
         }
         .legal-box details {
             background: rgba(255,255,255,0.9);
@@ -295,8 +324,8 @@
 
 <header class="header">
     <div class="header-inner">
-        <!-- LOGO AJUSTADO (nome do ficheiro do GitHub) -->
-        <img src="IMG-20251128-WA0001.jpg" alt="Food & Drinks Logo" class="header-logo">
+        <!-- certifica-te que o ficheiro existe na pasta: food-drinks-logo.png -->
+        <img src="food-drinks-logo.png" alt="Food & Drinks Logo" class="header-logo">
         <div class="header-title">Digitaler QR-Tischservice – Internes Bestellsystem</div>
     </div>
 </header>
@@ -386,20 +415,27 @@
     <div class="card" id="admin-login-card">
         <h2 class="section-title">Chef-Bereich</h2>
         <p class="small">
-            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert.
+            Zugang nur für Inhaber / Geschäftsführer. Hier werden alle gesendeten Bestellungen gespeichert
+            und das Menü (Produkte & Preise) verwaltet.
         </p>
         <label for="admin-password">Chef-Passwort:</label>
         <input id="admin-password" type="password" placeholder="Passwort eingeben">
         <button class="btn" onclick="adminLogin()">Chef-Login</button>
+        <div class="small" style="margin-top:4px;">
+            (Standard-Passwort: 1234 – bitte im Code anpassen)
+        </div>
     </div>
 
     <!-- CHEF PANEL -->
     <div class="card" id="admin-panel" style="display:none;">
         <div class="admin-header">
-            <h2 class="section-title" style="margin-bottom:0;">Gespeicherte Bestellungen</h2>
+            <h2 class="section-title" style="margin-bottom:0;">Chef-Bereich</h2>
             <button class="btn-logout" onclick="adminLogout()">Logout</button>
         </div>
-        <div class="small" style="margin-top:4px;">
+
+        <!-- BESTELLUNGEN -->
+        <div class="admin-subtitle">Gespeicherte Bestellungen</div>
+        <div class="small" style="margin-top:2px;">
             Hier werden alle Bestellungen gespeichert, die per WhatsApp gesendet oder gedruckt wurden.
             Der Chef kann einzelne Bestellungen oder alle Einträge löschen.
         </div>
@@ -407,51 +443,79 @@
         <button class="btn" style="margin-top:10px; background:#c62828;" onclick="clearAllOrders()">
             Alle Bestellungen löschen
         </button>
+
+        <!-- PRODUKT & PREIS VERWALTUNG -->
+        <div class="admin-subtitle" style="margin-top:16px;">Produkte & Preise verwalten</div>
+        <div class="small">
+            Wähle eine Kategorie, passe Namen, Preise und Optionen an oder füge neue Produkte hinzu.
+            Änderungen werden nur auf diesem Gerät gespeichert (lokal).
+        </div>
+
+        <label for="admin-group-select" style="margin-top:6px;">Kategorie:</label>
+        <select id="admin-group-select"></select>
+
+        <div id="admin-products-editor"></div>
+
+        <button class="btn" style="margin-top:10px; background:#00897b;" onclick="adminAddProduct()">
+            Neues Produkt in dieser Kategorie hinzufügen
+        </button>
+
+        <button class="btn" style="margin-top:8px;" onclick="adminSaveProducts()">
+            Änderungen speichern
+        </button>
+
+        <!-- Rechtlicher Hinweis nur für Chef -->
+        <div class="legal-box">
+            <details>
+                <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
+                <p>
+                    Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
+                    Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
+                </p>
+                <p>
+                    Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
+                    aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
+                    Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
+                </p>
+                <p>
+                    Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
+                    Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
+                    und darf nicht als Kassensystem verwendet werden.
+                </p>
+                <p>
+                    Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
+                    dieses Systems.
+                </p>
+            </details>
+        </div>
     </div>
 
 </div>
 
-<!-- RECHTLICHER HINWEIS – SÓ APARECE PARA O CHEFE (DEPOIS DO LOGIN) -->
-<div class="legal-box" id="legal-box">
-    <details>
-        <summary><strong>Rechtlicher Hinweis (anklicken)</strong></summary>
-        <p>
-            Dieses Bestellsystem ist ein internes, nicht fiskalisiertes Software-Tool und ersetzt keine
-            Registrierkasse oder steuerrechtlich relevante Aufzeichnung.
-        </p>
-        <p>
-            Der Betreiber dieses Systems ist allein verantwortlich für die ordnungsgemäße Nutzung und Einhaltung
-            aller gesetzlichen Vorschriften. Alle über dieses System erfassten Bestellungen müssen – sofern eine
-            Registrierkasse oder TSE-konforme Kasse vorhanden ist – gesetzlich korrekt in dieser registriert werden.
-        </p>
-        <p>
-            Dieses System besitzt keine Verbindung zu einer elektronischen Kasse, erfüllt nicht die Anforderungen der
-            Kassensicherungsverordnung (KassenSichV), der Technischen Sicherheitseinrichtung (TSE) oder der DSFinV-K
-            und darf nicht als Kassensystem verwendet werden.
-        </p>
-        <p>
-            Die Verantwortung für die steuerlich korrekte Verbuchung aller Umsätze liegt vollständig beim Anwender
-            dieses Systems.
-        </p>
-    </details>
-</div>
-
 <script>
-const WHATSAPP_NUMMER = "4917672809926";
+/* =================== CONFIG GERAL =================== */
 
-/* Chef Passwort – AGORA 1234 */
+const WHATSAPP_NUMMER = "4917672809926";
+/* Standard Chef-Passwort – PODES MUDAR AQUI */
 const ADMIN_PASSWORD = "1234";
 
-/* Coordenadas aproximadas (mantidas) – raio 150 m */
-const CAFE_LAT = 51.051;
-const CAFE_LNG = 8.392;
-const MAX_DIST_KM = 0.15; // 150 Meter
+/* Coordenadas do café (ajusta por cliente) */
+const CAFE_LAT = 51.051;   // latitude aproximada
+const CAFE_LNG = 8.392;    // longitude aproximada
+const MAX_DIST_KM = 1.5;   // raio permitido para pedidos via WhatsApp
 
 let gpsOk = false;
-let adminOrders = [];
 let isAdmin = false;
+let currentGroup = "portions";
 
-const PRODUKTE = {
+let menuData = null;       // { products, groups, nextId }
+let adminOrders = [];      // histórico de pedidos (guardado em localStorage)
+let warenkorb = [];
+
+/* =================== DADOS DEFAULT – MENU =================== */
+
+/* Produtos base (podes ajustar aqui o “menu padrão”) */
+const DEFAULT_PRODUCTS = {
     23: { name: "23. Kinder Portion (2 Kugeln)", preis: 3.50, type: "cup3" },
     24: { name: "24. Kleine Portion (3 Kugeln)", preis: 5.00, type: "cup3" },
     25: { name: "25. Normale Portion (4 Kugeln)", preis: 6.50, type: "cup3" },
@@ -636,14 +700,8 @@ const PRODUKTE = {
     638:{ name: "630h. Waffel Tutti Frutti", preis: 7.50, type: "normal" }
 };
 
-const SORTEN = [
-    "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
-    "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
-    "Erdbeere","Mango","Banane","Himbeere","Limette",
-    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
-];
-
-const SAHNE_PRODUKTE = new Set([
+/* IDs que têm opção de Sahne por padrão */
+const SAHNE_DEFAULT_IDS = new Set([
     23, 24, 25, 26,
     30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
     81,82,83,84,85,
@@ -662,7 +720,8 @@ const SAHNE_PRODUKTE = new Set([
     631,632,633,634,635,636,637,638
 ]);
 
-const GROUPS = {
+/* Grupos base (tabs) */
+const DEFAULT_GROUPS = {
     portions: [23,24,25,26],
     kids: [23,160,161,162,163,164,130,154,150,151,152,153],
     eis: [
@@ -696,42 +755,142 @@ const GROUPS = {
     ]
 };
 
-let warenkorb = [];
-let currentGroup = "portions";
+const GROUP_LABELS = {
+    portions: "Portionen",
+    kids: "Kinder",
+    eis: "Eisbecher & Spaghetti",
+    food: "Snacks & Waffeln",
+    drinks: "Getränke"
+};
 
-/* Tische */
-const tischSelect = document.getElementById("tisch");
-for (let i = 1; i <= 33; i++) {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = "Tisch " + i;
-    tischSelect.appendChild(opt);
+/* Sortenliste (para Portionen) */
+const SORTEN = [
+    "Vanille","Amarena","Joghurt","Nuss","Schokolade","Stracciatella",
+    "After Eight","Schlumpfeis","Malaga","Walnuss","Cookies","Zitrone",
+    "Erdbeere","Mango","Banane","Himbeere","Limette",
+    "Dunkle Schokolade","Paw Patrol","Snickers","Pistazien"
+];
+
+/* =================== FUNÇÕES DE MENU / CONFIG =================== */
+
+function buildDefaultMenuData() {
+    const products = {};
+    Object.keys(DEFAULT_PRODUCTS).forEach(idStr => {
+        const base = DEFAULT_PRODUCTS[idStr];
+        const idNum = parseInt(idStr, 10);
+        products[idStr] = {
+            id: idNum,
+            name: base.name,
+            price: base.preis,
+            type: base.type,          // "normal" ou "cup3"
+            hasSahne: SAHNE_DEFAULT_IDS.has(idNum),
+            active: true
+        };
+    });
+
+    const groups = {};
+    Object.keys(DEFAULT_GROUPS).forEach(g => {
+        groups[g] = DEFAULT_GROUPS[g].map(id => String(id));
+    });
+
+    return {
+        products,
+        groups,
+        nextId: 1000
+    };
 }
 
-/* Sorten */
-function fillSortenSelect(id) {
-    const sel = document.getElementById(id);
-    sel.innerHTML = "<option value=''>Sorte wählen…</option>";
-    SORTEN.forEach(s => {
+function loadMenuData() {
+    try {
+        const raw = localStorage.getItem("sanremo_menu_config");
+        if (raw) {
+            menuData = JSON.parse(raw);
+            return;
+        }
+    } catch(e) {
+        console.warn("Fehler beim Laden des Menüs, benutze Standardwerte.", e);
+    }
+    menuData = buildDefaultMenuData();
+}
+
+function saveMenuData() {
+    try {
+        localStorage.setItem("sanremo_menu_config", JSON.stringify(menuData));
+    } catch(e) {
+        console.warn("Konnte Menü-Konfiguration nicht speichern.", e);
+    }
+}
+
+/* =================== ADMIN ORDERS (HISTÓRICO) =================== */
+
+function loadAdminOrders() {
+    try {
+        const raw = localStorage.getItem("sanremo_order_log");
+        if (raw) {
+            adminOrders = JSON.parse(raw);
+        } else {
+            adminOrders = [];
+        }
+    } catch(e) {
+        console.warn("Fehler beim Laden der Bestellhistorie.", e);
+        adminOrders = [];
+    }
+}
+
+function saveAdminOrders() {
+    try {
+        localStorage.setItem("sanremo_order_log", JSON.stringify(adminOrders));
+    } catch(e) {
+        console.warn("Konnte Bestellhistorie nicht speichern.", e);
+    }
+}
+
+/* =================== HELPERS =================== */
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;");
+}
+
+/* =================== UI INICIAL =================== */
+
+function initTische() {
+    const tischSelect = document.getElementById("tisch");
+    for (let i = 1; i <= 33; i++) {
         const opt = document.createElement("option");
-        opt.value = s;
-        opt.textContent = s;
-        sel.appendChild(opt);
+        opt.value = i;
+        opt.textContent = "Tisch " + i;
+        tischSelect.appendChild(opt);
+    }
+}
+
+function initSorten() {
+    ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
+        const sel = document.getElementById(id);
+        sel.innerHTML = "<option value=''>Sorte wählen…</option>";
+        SORTEN.forEach(s => {
+            const opt = document.createElement("option");
+            opt.value = s;
+            opt.textContent = s;
+            sel.appendChild(opt);
+        });
     });
 }
-["geschmack1", "geschmack2", "geschmack3"].forEach(fillSortenSelect);
 
-/* Produkt-Select je Gruppe */
+/* Preenche select de produto com base na categoria */
 function buildProduktSelect(group) {
     const select = document.getElementById("produkt");
     select.innerHTML = "<option value=''>Bitte wählen…</option>";
-    const ids = GROUPS[group] || [];
-    ids.forEach(id => {
-        const p = PRODUKTE[id];
-        if (!p) return;
+    const ids = (menuData.groups[group] || []);
+    ids.forEach(idStr => {
+        const p = menuData.products[idStr];
+        if (!p || !p.active) return;
         const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = p.name + " – " + p.preis.toFixed(2).replace(".", ",") + " €";
+        opt.value = idStr;
+        opt.textContent = p.name + " – " + p.price.toFixed(2).replace(".", ",") + " €";
         select.appendChild(opt);
     });
 
@@ -745,64 +904,68 @@ function buildProduktSelect(group) {
 }
 
 /* Tabs */
-document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        currentGroup = btn.dataset.group;
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        buildProduktSelect(currentGroup);
-    });
-});
-buildProduktSelect(currentGroup);
-
-/* Produktwechsel */
-document.getElementById("produkt").addEventListener("change", function() {
-    const wert = this.value;
-    const geschmackBox = document.getElementById("geschmack-box");
-    const sahneBox = document.getElementById("sahne-box");
-
-    if (!wert || !PRODUKTE[wert]) {
-        geschmackBox.style.display = "none";
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-        return;
-    }
-
-    const idNum = parseInt(wert, 10);
-
-    if (PRODUKTE[wert].type === "cup3") {
-        geschmackBox.style.display = "block";
-    } else {
-        geschmackBox.style.display = "none";
-        ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
-            const sel = document.getElementById(id);
-            if (sel) sel.value = "";
+function initTabs() {
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            currentGroup = btn.dataset.group;
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            buildProduktSelect(currentGroup);
         });
-    }
+    });
+}
 
-    if (SAHNE_PRODUKTE.has(idNum)) {
-        sahneBox.style.display = "block";
-    } else {
-        sahneBox.style.display = "none";
-        document.getElementById("sahne").value = "";
-    }
-});
+/* Produto change – mostra Sorten / Sahne */
+function initProduktChange() {
+    document.getElementById("produkt").addEventListener("change", function() {
+        const wert = this.value;
+        const geschmackBox = document.getElementById("geschmack-box");
+        const sahneBox = document.getElementById("sahne-box");
 
-/* Warenkorb */
+        if (!wert || !menuData.products[wert]) {
+            geschmackBox.style.display = "none";
+            sahneBox.style.display = "none";
+            document.getElementById("sahne").value = "";
+            return;
+        }
+
+        const p = menuData.products[wert];
+
+        if (p.type === "cup3") {
+            geschmackBox.style.display = "block";
+        } else {
+            geschmackBox.style.display = "none";
+            ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
+                const sel = document.getElementById(id);
+                if (sel) sel.value = "";
+            });
+        }
+
+        if (p.hasSahne) {
+            sahneBox.style.display = "block";
+        } else {
+            sahneBox.style.display = "none";
+            document.getElementById("sahne").value = "";
+        }
+    });
+}
+
+/* =================== WARENKORB =================== */
+
 function addToCart() {
     const tisch = document.getElementById("tisch").value;
-       if (!tisch) {
+    if (!tisch) {
         alert("Bitte zuerst den Tisch auswählen.");
         return;
     }
 
     const produktId = document.getElementById("produkt").value;
-    if (!produktId || !PRODUKTE[produktId]) {
+    if (!produktId || !menuData.products[produktId]) {
         alert("Bitte ein Produkt auswählen.");
         return;
     }
 
-    const produkt = PRODUKTE[produktId];
+    const produkt = menuData.products[produktId];
     let sorten = [];
     const bemerkung = document.getElementById("bemerkung").value.trim();
 
@@ -816,15 +979,14 @@ function addToCart() {
     }
 
     let sahne = "";
-    const idNum = parseInt(produktId, 10);
-    if (SAHNE_PRODUKTE.has(idNum)) {
+    if (produkt.hasSahne) {
         sahne = document.getElementById("sahne").value;
     }
 
     warenkorb.push({
         id: produktId,
         name: produkt.name,
-        preis: produkt.preis,
+        price: produkt.price,
         type: produkt.type,
         sorten: sorten,
         bemerkung: bemerkung,
@@ -853,7 +1015,7 @@ function updateCart() {
     let total = 0;
 
     warenkorb.forEach((item, index) => {
-        total += item.preis;
+        total += item.price;
 
         const line = document.createElement("div");
         line.className = "line-item";
@@ -861,7 +1023,7 @@ function updateCart() {
         const info = document.createElement("div");
         info.className = "item-info";
 
-        let text = item.name + " – " + item.preis.toFixed(2).replace(".", ",") + " €";
+        let text = item.name + " – " + item.price.toFixed(2).replace(".", ",") + " €";
         if (item.type === "cup3" && item.sorten.length > 0) {
             text += "<br><span class='small'>Sorten: " + item.sorten.join(", ") + "</span>";
         }
@@ -894,15 +1056,15 @@ function removeItem(index) {
     updateCart();
 }
 
-/* Texto da encomenda */
+/* Texto da encomenda (plain text) */
 function buildOrderText() {
     const tisch = document.getElementById("tisch").value || "-";
     let total = 0;
     let text = `Tisch ${tisch} - Bestellung:\n`;
 
     warenkorb.forEach(item => {
-        total += item.preis;
-        let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
+        total += item.price;
+        let line = `• ${item.name} (${item.price.toFixed(2)} €)`;
         if (item.type === "cup3" && item.sorten.length > 0) {
             line += ` – Sorten: ${item.sorten.join(", ")}`;
         }
@@ -919,16 +1081,18 @@ function buildOrderText() {
     return text;
 }
 
-/* Guardar pedido para o chefe */
+/* Guardar pedido para o Chef */
 function storeOrder(channel) {
     const tisch = document.getElementById("tisch").value || "-";
     const textPlain = buildOrderText();
     const timestamp = new Date().toLocaleString("de-DE");
     adminOrders.push({ tisch, channel, text: textPlain, time: timestamp });
+    saveAdminOrders();
     if (isAdmin) updateAdminList();
 }
 
-/* WhatsApp */
+/* =================== WHATSAPP & DRUCKEN =================== */
+
 function sendWhatsApp() {
     if (!gpsOk) {
         alert("Bestellung nur vor Ort möglich. Bitte Standort-Freigabe erlauben.");
@@ -954,7 +1118,6 @@ function sendWhatsApp() {
     updateCart();
 }
 
-/* Drucker */
 function printOrder() {
     if (warenkorb.length === 0) {
         alert("Der Warenkorb ist leer.");
@@ -983,7 +1146,8 @@ function printOrder() {
     win.print();
 }
 
-/* Reset */
+/* =================== RESET =================== */
+
 function resetTable() {
     if (!confirm("Möchten Sie den Tisch wirklich zurücksetzen? Alle Bestellungen werden gelöscht.")) {
         return;
@@ -1009,7 +1173,8 @@ function resetTable() {
     document.getElementById("bemerkung").value = "";
 }
 
-/* GPS */
+/* =================== GPS =================== */
+
 function deg2rad(deg) { return deg * (Math.PI / 180); }
 
 function distanceKm(lat1, lon1, lat2, lon2) {
@@ -1058,15 +1223,17 @@ function initLocation() {
     );
 }
 
-/* Chef-Login & Admin-Panel */
+/* =================== CHEF LOGIN & ADMIN PANEL =================== */
+
 function adminLogin() {
     const pw = document.getElementById("admin-password").value;
     if (pw === ADMIN_PASSWORD) {
         isAdmin = true;
         document.getElementById("admin-login-card").style.display = "none";
         document.getElementById("admin-panel").style.display = "block";
-        document.getElementById("legal-box").style.display = "block"; // mostrar Hinweis só para o chefe
         updateAdminList();
+        initAdminGroupSelect();
+        renderAdminProducts();
     } else {
         alert("Falsches Passwort.");
     }
@@ -1077,7 +1244,6 @@ function adminLogout() {
     document.getElementById("admin-panel").style.display = "none";
     document.getElementById("admin-login-card").style.display = "block";
     document.getElementById("admin-password").value = "";
-    document.getElementById("legal-box").style.display = "none"; // esconder novamente
 }
 
 function updateAdminList() {
@@ -1092,8 +1258,8 @@ function updateAdminList() {
         const div = document.createElement("div");
         div.className = "admin-order";
         div.innerHTML = `
-            <strong>${o.time}</strong> – Tisch ${o.tisch} (${o.channel})<br>
-            ${o.text.replace(/\n/g,"<br>")}
+            <strong>${escapeHtml(o.time)}</strong> – Tisch ${escapeHtml(o.tisch)} (${escapeHtml(o.channel)})<br>
+            ${escapeHtml(o.text).replace(/\n/g,"<br>")}
             <br>
             <button class="btn-small" onclick="deleteOrder(${idx})">Löschen</button>
         `;
@@ -1103,16 +1269,198 @@ function updateAdminList() {
 
 function deleteOrder(index) {
     adminOrders.splice(index, 1);
+    saveAdminOrders();
     updateAdminList();
 }
 
 function clearAllOrders() {
     if (!confirm("Alle gespeicherten Bestellungen wirklich löschen?")) return;
     adminOrders = [];
+    saveAdminOrders();
     updateAdminList();
 }
 
-window.addEventListener("load", initLocation);
+/* =================== ADMIN – PRODUKTE & PREISE =================== */
+
+function initAdminGroupSelect() {
+    const sel = document.getElementById("admin-group-select");
+    sel.innerHTML = "";
+    Object.keys(GROUP_LABELS).forEach(key => {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = GROUP_LABELS[key];
+        sel.appendChild(opt);
+    });
+    sel.value = currentGroup || "portions";
+    sel.onchange = () => renderAdminProducts();
+}
+
+function renderAdminProducts() {
+    const group = document.getElementById("admin-group-select").value;
+    const container = document.getElementById("admin-products-editor");
+    const ids = menuData.groups[group] || [];
+
+    if (ids.length === 0) {
+        container.innerHTML = "<div class='small'>Keine Produkte in dieser Kategorie.</div>";
+        return;
+    }
+
+    let html = `
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Aktiv</th>
+                    <th>Name</th>
+                    <th>Preis (€)</th>
+                    <th>Art</th>
+                    <th>Sahne</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    ids.forEach(idStr => {
+        const p = menuData.products[idStr];
+        if (!p) return;
+        html += `
+            <tr data-id="${idStr}">
+                <td style="text-align:center;">
+                    <input type="checkbox" class="admin-active" ${p.active ? "checked" : ""}>
+                </td>
+                <td>
+                    <input type="text" class="admin-name" value="${escapeHtml(p.name)}">
+                </td>
+                <td>
+                    <input type="number" step="0.10" class="admin-price" value="${p.price.toFixed(2)}">
+                </td>
+                <td>
+                    <select class="admin-type">
+                        <option value="normal" ${p.type === "normal" ? "selected" : ""}>Normal</option>
+                        <option value="cup3" ${p.type === "cup3" ? "selected" : ""}>Portion (mit Sorten)</option>
+                    </select>
+                </td>
+                <td style="text-align:center;">
+                    <input type="checkbox" class="admin-sahne" ${p.hasSahne ? "checked" : ""}>
+                </td>
+                <td style="text-align:right;">
+                    <button type="button" class="btn-small admin-remove">X</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    html += "</tbody></table>";
+    container.innerHTML = html;
+
+    container.querySelectorAll(".admin-remove").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tr = btn.closest("tr");
+            const id = tr.getAttribute("data-id");
+            adminRemoveProductFromGroup(group, id);
+        });
+    });
+}
+
+/* Remove produto da categoria (e de outras se quiseres) */
+function adminRemoveProductFromGroup(group, idStr) {
+    if (!confirm("Dieses Produkt aus dieser Kategorie entfernen?")) return;
+
+    Object.keys(menuData.groups).forEach(g => {
+        menuData.groups[g] = menuData.groups[g].filter(x => x !== idStr);
+    });
+
+    // se não estiver em mais nenhuma categoria, apaga completamente
+    let stillUsed = false;
+    Object.values(menuData.groups).forEach(arr => {
+        if (arr.includes(idStr)) stillUsed = true;
+    });
+    if (!stillUsed) {
+        delete menuData.products[idStr];
+    }
+
+    saveMenuData();
+    renderAdminProducts();
+    buildProduktSelect(currentGroup);
+}
+
+/* Adicionar novo produto à categoria atual */
+function adminAddProduct() {
+    const group = document.getElementById("admin-group-select").value;
+    if (!group) return;
+
+    const newIdNum = menuData.nextId || 1000;
+    menuData.nextId = newIdNum + 1;
+    const idStr = String(newIdNum);
+
+    menuData.products[idStr] = {
+        id: newIdNum,
+        name: "Neues Produkt",
+        price: 0,
+        type: (group === "portions" ? "cup3" : "normal"),
+        hasSahne: (group === "portions" || group === "kids" || group === "eis" || group === "food"),
+        active: true
+    };
+
+    if (!menuData.groups[group]) menuData.groups[group] = [];
+    menuData.groups[group].push(idStr);
+
+    saveMenuData();
+    renderAdminProducts();
+    buildProduktSelect(currentGroup);
+}
+
+/* Guardar alterações feitas no editor */
+function adminSaveProducts() {
+    const group = document.getElementById("admin-group-select").value;
+    const container = document.getElementById("admin-products-editor");
+    const rows = container.querySelectorAll("tr[data-id]");
+
+    const newOrder = [];
+    rows.forEach(tr => {
+        const idStr = tr.getAttribute("data-id");
+        const p = menuData.products[idStr];
+        if (!p) return;
+
+        const active = tr.querySelector(".admin-active").checked;
+        const name = tr.querySelector(".admin-name").value.trim() || "Unbenannt";
+        const priceStr = tr.querySelector(".admin-price").value.replace(",", ".");
+        let price = parseFloat(priceStr);
+        if (isNaN(price) || price < 0) price = 0;
+
+        const typeVal = tr.querySelector(".admin-type").value === "cup3" ? "cup3" : "normal";
+        const hasSahne = tr.querySelector(".admin-sahne").checked;
+
+        p.active = active;
+        p.name = name;
+        p.price = price;
+        p.type = typeVal;
+        p.hasSahne = hasSahne;
+
+        newOrder.push(idStr);
+    });
+
+    menuData.groups[group] = newOrder;
+    saveMenuData();
+    buildProduktSelect(currentGroup);
+    alert("Produkte gespeichert.");
+}
+
+/* =================== ON LOAD =================== */
+
+window.addEventListener("load", () => {
+    loadMenuData();
+    loadAdminOrders();
+
+    initTische();
+    initSorten();
+    initTabs();
+    initProduktChange();
+
+    buildProduktSelect(currentGroup);
+    updateCart();
+    initLocation();
+});
 </script>
 
 </body>
