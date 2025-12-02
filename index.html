@@ -11,39 +11,47 @@
             --primary-dark: #b71c1c;
             --bg: #fff8f2;
             --card-bg: #ffffff;
-
+            
+            /* NOVA COR PARA BARRA SUPERIOR - LARANJA/ROSA */
+            --header-gradient-start: #FF6B6B;
+            --header-gradient-end: #FF8E53;
+            
             --tab-portions: #ffb300;
             --tab-kids: #ff4081;
             --tab-eis: #29b6f6;
             --tab-food: #66bb6a;
             --tab-drinks: #ab47bc;
         }
-        * { box-sizing: border-box; }
+        * { 
+            box-sizing: border-box; 
+        }
         body {
             font-family: Arial, sans-serif;
             background: radial-gradient(circle at top, #fffdf8 0%, #fff3e0 35%, #ffe0b2 100%);
             margin: 0;
             padding: 0;
             color: #222;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
-        /* HEADER COM NOVOS ELEMENTOS */
+        /* HEADER COM NOVA COR - GRADIENTE LARANJA/ROSA */
         .header {
             width: 100%;
-            background: linear-gradient(135deg, #000000 0%, #111111 40%, #000000 100%);
+            background: linear-gradient(135deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
             padding: 12px 0 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
             position: relative;
         }
         .header-inner {
-            max-width: 900px;
+            max-width: 1200px; /* AUMENTADO PARA MAIOR LARGURA */
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            padding: 0 10px;
+            padding: 0 15px; /* MAIS PADDING */
         }
         .logo-section {
             display: flex;
@@ -60,9 +68,10 @@
         .header-title {
             font-size: 20px;
             font-weight: 600;
-            color: #fdd835;
+            color: white;
             letter-spacing: 0.5px;
             text-align: center;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         
         /* CONTROLES DO HEADER */
@@ -82,25 +91,26 @@
             height: 24px;
             border-radius: 3px;
             cursor: pointer;
-            opacity: 0.7;
+            opacity: 0.8;
             transition: all 0.3s;
             border: 2px solid transparent;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .lang-btn:hover {
-            opacity: 0.9;
+            opacity: 1;
             transform: translateY(-1px);
         }
         .lang-btn.active {
             opacity: 1;
-            border-color: #fdd835;
-            box-shadow: 0 0 5px rgba(253, 216, 53, 0.5);
+            border-color: white;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         }
         
         /* BOTÃO ADMIN */
         .admin-btn {
-            background: #f39c12;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 8px 15px;
             border-radius: 20px;
             cursor: pointer;
@@ -110,31 +120,43 @@
             gap: 5px;
             font-size: 14px;
             transition: all 0.3s;
+            backdrop-filter: blur(10px);
         }
         .admin-btn:hover {
-            background: #e67e22;
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-1px);
         }
         
         /* NÚMERO DA MESA NO HEADER */
         .table-display {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.2);
             padding: 8px 15px;
             border-radius: 20px;
             display: flex;
             align-items: center;
             gap: 8px;
             color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
         }
         .table-number {
             font-weight: bold;
             font-size: 16px;
         }
 
-        @media (max-width: 600px) {
+        /* CONTAINER PRINCIPAL MAIS LARGO */
+        .container {
+            padding: 20px 15px; /* MAIS PADDING */
+            max-width: 1200px; /* AUMENTADO DE 960px PARA 1200px */
+            margin: 0 auto 25px auto;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
             .header-inner {
                 flex-direction: column;
                 gap: 10px;
+                padding: 0 10px;
             }
             .header-controls {
                 flex-wrap: wrap;
@@ -152,13 +174,25 @@
                 padding: 6px 12px;
                 font-size: 14px;
             }
+            .container {
+                padding: 15px 10px;
+            }
         }
 
-        .container {
-            padding: 15px;
-            max-width: 960px;
-            margin: 0 auto 25px auto;
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 15px;
+            }
+            .header-controls {
+                gap: 8px;
+            }
+            .lang-btn {
+                width: 28px;
+                height: 20px;
+            }
         }
+
+        /* RESTANTE DO CSS PERMANECE IGUAL ATÉ... */
         .section-title {
             font-size: 18px;
             margin-top: 18px;
@@ -222,6 +256,96 @@
             cursor: not-allowed;
             box-shadow: none;
             transform: none;
+        }
+
+        /* SELEÇÃO DE SABORES - NOVO DESIGN */
+        .flavor-selection {
+            margin-top: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        
+        .flavor-title {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .flavor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .flavor-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+        
+        .flavor-option:hover {
+            border-color: #ff8e53;
+            transform: translateY(-2px);
+        }
+        
+        .flavor-option.selected {
+            background-color: #e1f5fe;
+            border-color: #4fc3f7;
+            color: #0277bd;
+            font-weight: 600;
+        }
+        
+        .flavor-counter {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        /* OPÇÕES DE SAHNE - NOVO DESIGN */
+        .sahne-selection {
+            margin-top: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        
+        .sahne-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .sahne-option {
+            flex: 1;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .sahne-option:hover {
+            border-color: #ff8e53;
+        }
+        
+        .sahne-option.selected {
+            background-color: #f1f8e9;
+            border-color: #9ccc65;
+            color: #558b2f;
+            font-weight: 600;
         }
 
         #warenkorb {
@@ -313,6 +437,12 @@
                 font-size: 11px;
                 padding: 6px 6px;
             }
+            .flavor-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .sahne-options {
+                flex-direction: column;
+            }
         }
 
         /* Chef-Bereich */
@@ -354,7 +484,7 @@
             background: #b71c1c;
         }
 
-        /* NOVO: BOTÕES DE AÇÃO ADICIONAIS */
+        /* BOTÕES DE AÇÃO ADICIONAIS */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -435,7 +565,7 @@
             font-size: 11px;
             color: #777;
             margin: 10px auto 0 auto;
-            max-width: 960px;
+            max-width: 1200px; /* AUMENTADO PARA 1200px */
             text-align: left;
             line-height: 1.5;
             padding: 0 12px 18px 12px;
@@ -513,7 +643,12 @@
         <label for="produkt" id="product-label">Produkt:</label>
         <select id="produkt"></select>
 
-        <!-- Sortenwahl nur für Portionen (optional) -->
+        <!-- CONTAINER PARA OPÇÕES DE GELADO (APARECE DINAMICAMENTE) -->
+        <div id="ice-options-container" style="margin-top: 15px; display: none;">
+            <!-- Aqui serão inseridas dinamicamente as opções de sabores e sahne -->
+        </div>
+
+        <!-- Sortenwahl nur für Portionen (original - mantido para compatibilidade) -->
         <div id="geschmack-box" style="margin-top:12px; display:none;">
             <label id="flavor-label">Sorten (optional, bis zu 3 wählen):</label>
             <select id="geschmack1"></select>
@@ -524,7 +659,7 @@
             </div>
         </div>
 
-        <!-- Sahne-Option -->
+        <!-- Sahne-Option (original - mantido para compatibilidade) -->
         <div id="sahne-box" style="margin-top:8px; display:none;">
             <label for="sahne" id="cream-label">Sahne (+1,20 €):</label>
             <select id="sahne">
@@ -778,10 +913,10 @@ const TRANSLATIONS = {
         
         // Labels
         "product-label": "Produkt:",
-        "flavor-label": "Sorten (optional, bis zu 3 wählen):",
-        "flavor-info": "Wenn keine Sorten gewählt werden, kommt die Portion in unserer Standardmischung.",
-        "cream-label": "Sahne (+1,20 €):",
-        "cream-info": "Wenn nichts gewählt wird, bereiten wir es wie auf der Karte zu.",
+        "flavor-label": "Wählen Sie 3 Geschmacksrichtungen:",
+        "flavor-info": "Bitte wählen Sie genau 3 Sorten aus.",
+        "cream-label": "Mit Sahne oder ohne Sahne?",
+        "cream-info": "",
         "note-label": "Bemerkung (optional):",
         "password-label": "Chef-Passwort:",
         
@@ -855,10 +990,10 @@ const TRANSLATIONS = {
         "tab-drinks": "Bebidas",
         
         "product-label": "Produto:",
-        "flavor-label": "Sabores (opcional, até 3):",
-        "flavor-info": "Se não escolher sabores, a porção vem na nossa mistura padrão.",
-        "cream-label": "Creme (+1,20 €):",
-        "cream-info": "Se não escolher, preparamos como no cardápio.",
+        "flavor-label": "Escolha 3 sabores:",
+        "flavor-info": "Por favor, escolha exatamente 3 sabores.",
+        "cream-label": "Com ou sem creme?",
+        "cream-info": "",
         "note-label": "Observação (opcional):",
         "password-label": "Senha do Chefe:",
         
@@ -922,10 +1057,10 @@ const TRANSLATIONS = {
         "tab-drinks": "Bevande",
         
         "product-label": "Prodotto:",
-        "flavor-label": "Gusti (opzionale, fino a 3):",
-        "flavor-info": "Se non si scelgono gusti, la porzione viene nella nostra miscela standard.",
-        "cream-label": "Panna (+1,20 €):",
-        "cream-info": "Se non si sceglie, prepariamo come da menù.",
+        "flavor-label": "Scegliere 3 gusti:",
+        "flavor-info": "Per favore, scegliere esattamente 3 gusti.",
+        "cream-label": "Con panna o senza panna?",
+        "cream-info": "",
         "note-label": "Nota (opzionale):",
         "password-label": "Password Chef:",
         
@@ -989,10 +1124,10 @@ const TRANSLATIONS = {
         "tab-drinks": "Dranken",
         
         "product-label": "Product:",
-        "flavor-label": "Smaken (optioneel, tot 3):",
-        "flavor-info": "Als er geen smaken worden gekozen, komt de portie in onze standaardmix.",
-        "cream-label": "Slagroom (+1,20 €):",
-        "cream-info": "Als er niets wordt gekozen, bereiden we het zoals op de kaart.",
+        "flavor-label": "Kies 3 smaken:",
+        "flavor-info": "Kies alstublieft precies 3 smaken.",
+        "cream-label": "Met slagroom of zonder slagroom?",
+        "cream-info": "",
         "note-label": "Opmerking (optioneel):",
         "password-label": "Chef Wachtwoord:",
         
@@ -1045,6 +1180,8 @@ const TRANSLATIONS = {
 let currentLanguage = 'de';
 let selectedPrintOption = 'print-now';
 let savedOrders = JSON.parse(localStorage.getItem('saved_orders')) || [];
+let currentSelectedFlavors = [];
+let currentSahneOption = '';
 
 // Função para mudar idioma
 function setLanguage(lang) {
@@ -1143,6 +1280,146 @@ function setLanguage(lang) {
             btn.classList.add('active');
         }
     });
+}
+
+// Função para mostrar opções de gelado (3 sabores + sahne)
+function showIceOptions(produktId) {
+    const container = document.getElementById('ice-options-container');
+    const produkt = PRODUCTS[produktId];
+    
+    if (!produkt) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    // Verificar se é um produto de gelado
+    // Consideramos gelado: tudo na categoria "portions", "eis", "kids" e alguns em "food"
+    const isIceProduct = ['portions', 'eis', 'kids'].includes(produkt.group) || 
+                         (produkt.group === 'food' && produkt.name.toLowerCase().includes('eis'));
+    
+    if (!isIceProduct) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    // Resetar seleções
+    currentSelectedFlavors = [];
+    currentSahneOption = 'mit Sahne'; // Default: com sahne
+    
+    // Criar HTML para opções de gelado
+    let html = '';
+    
+    // Se for um produto que pode ter múltiplos sabores
+    if (produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') {
+        html += `
+        <div class="flavor-selection">
+            <div class="flavor-title">
+                <i class="fas fa-palette"></i>
+                ${TRANSLATIONS[currentLanguage]['flavor-label']}
+            </div>
+            <div class="flavor-grid" id="flavor-grid">
+                <!-- Sabores serão inseridos por JavaScript -->
+            </div>
+            <div class="flavor-counter" id="flavor-counter">0/3 ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}</div>
+        </div>
+        `;
+    }
+    
+    // Opção de Sahne para todos os produtos de gelado
+    html += `
+    <div class="sahne-selection">
+        <div class="flavor-title">
+            <i class="fas fa-whipped-cream"></i>
+            ${TRANSLATIONS[currentLanguage]['cream-label']}
+        </div>
+        <div class="sahne-options">
+            <div class="sahne-option selected" data-sahne="mit Sahne">
+                ${currentLanguage === 'de' ? 'Mit Sahne (+1,20 €)' : 
+                  currentLanguage === 'pt' ? 'Com creme (+1,20 €)' :
+                  currentLanguage === 'it' ? 'Con panna (+1,20 €)' :
+                  'Met slagroom (+1,20 €)'}
+            </div>
+            <div class="sahne-option" data-sahne="ohne Sahne">
+                ${currentLanguage === 'de' ? 'Ohne Sahne' : 
+                  currentLanguage === 'pt' ? 'Sem creme' :
+                  currentLanguage === 'it' ? 'Senza panna' :
+                  'Zonder slagroom'}
+            </div>
+        </div>
+    </div>
+    `;
+    
+    container.innerHTML = html;
+    container.style.display = 'block';
+    
+    // Preencher sabores disponíveis
+    if (produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') {
+        const flavorGrid = document.getElementById('flavor-grid');
+        flavorGrid.innerHTML = '';
+        
+        // Mostrar apenas os primeiros 12 sabores para não sobrecarregar
+        const flavorsToShow = SORTEN.slice(0, 12);
+        
+        flavorsToShow.forEach(flavor => {
+            const flavorDiv = document.createElement('div');
+            flavorDiv.className = 'flavor-option';
+            flavorDiv.textContent = flavor;
+            flavorDiv.addEventListener('click', function() {
+                toggleFlavorSelection(this, flavor);
+            });
+            flavorGrid.appendChild(flavorDiv);
+        });
+        
+        // Atualizar contador
+        updateFlavorCounter();
+    }
+    
+    // Configurar opções de Sahne
+    const sahneOptions = container.querySelectorAll('.sahne-option');
+    sahneOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            sahneOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            currentSahneOption = this.dataset.sahne;
+        });
+    });
+}
+
+// Função para alternar seleção de sabor
+function toggleFlavorSelection(element, flavor) {
+    if (currentSelectedFlavors.includes(flavor)) {
+        // Remover sabor
+        const index = currentSelectedFlavors.indexOf(flavor);
+        currentSelectedFlavors.splice(index, 1);
+        element.classList.remove('selected');
+    } else {
+        // Adicionar sabor (se não atingiu o limite)
+        if (currentSelectedFlavors.length < 3) {
+            currentSelectedFlavors.push(flavor);
+            element.classList.add('selected');
+        } else {
+            alert(TRANSLATIONS[currentLanguage]['flavor-info']);
+        }
+    }
+    
+    updateFlavorCounter();
+}
+
+// Função para atualizar contador de sabores
+function updateFlavorCounter() {
+    const counter = document.getElementById('flavor-counter');
+    if (counter) {
+        counter.textContent = `${currentSelectedFlavors.length}/3 ${currentLanguage === 'de' ? 'ausgewählt' : 'selecionados'}`;
+        
+        // Mudar cor se tiver 3 selecionados
+        if (currentSelectedFlavors.length === 3) {
+            counter.style.color = '#4CAF50';
+            counter.style.fontWeight = '600';
+        } else {
+            counter.style.color = '#666';
+            counter.style.fontWeight = 'normal';
+        }
+    }
 }
 
 // Função para guardar pedido no localStorage
@@ -1272,6 +1549,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Atualizar display da mesa quando mudar
     document.getElementById('tisch').addEventListener('change', updateTableDisplay);
     
+    // Atualizar opções quando produto mudar
+    document.getElementById('produkt').addEventListener('change', function() {
+        const produktId = this.value;
+        if (produktId) {
+            showIceOptions(produktId);
+        } else {
+            document.getElementById('ice-options-container').style.display = 'none';
+        }
+    });
+    
     // Inicializar com idioma alemão
     setLanguage('de');
     updateTableDisplay();
@@ -1284,10 +1571,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =============== MANTENDO SUAS FUNÇÕES EXISTENTES ===============
-// Todas as suas funções originais permanecem aqui...
-// Incluindo: BASE_PRODUCTS, SORTEN, PRODUCTS, etc.
-// (O resto do seu código JavaScript original continua aqui)
-
 const WHATSAPP_NUMMER = "4917672809926";
 const ADMIN_PASSWORD = "1234";
 const SAHNE_AUFSCHLAG = 1.20;
@@ -1561,6 +1844,7 @@ function buildProduktSelect(group) {
 
     document.getElementById("geschmack-box").style.display = "none";
     document.getElementById("sahne-box").style.display = "none";
+    document.getElementById("ice-options-container").style.display = "none";
     ["geschmack1","geschmack2","geschmack3"].forEach(id=>{
         document.getElementById(id).value = "";
     });
@@ -1584,16 +1868,22 @@ document.getElementById("produkt").addEventListener("change", function() {
     const wert = this.value;
     const geschmackBox = document.getElementById("geschmack-box");
     const sahneBox = document.getElementById("sahne-box");
+    const iceOptionsContainer = document.getElementById("ice-options-container");
 
     if (!wert || !PRODUCTS[wert]) {
         geschmackBox.style.display = "none";
         sahneBox.style.display = "none";
+        iceOptionsContainer.style.display = "none";
         document.getElementById("sahne").value = "";
         return;
     }
 
     const produkt = PRODUCTS[wert];
 
+    // Mostrar opções de gelado com nova interface
+    showIceOptions(wert);
+
+    // Manter compatibilidade com interface antiga
     if (produkt.type === "cup3") {
         geschmackBox.style.display = "block";
     } else {
@@ -1612,7 +1902,7 @@ document.getElementById("produkt").addEventListener("change", function() {
     }
 });
 
-/* Warenkorb */
+/* Warenkorb - MODIFICADA PARA USAR NOVA INTERFACE */
 function addToCart() {
     const tisch = document.getElementById("tisch").value;
     if (!tisch) {
@@ -1630,22 +1920,45 @@ function addToCart() {
     let sorten = [];
     const bemerkung = document.getElementById("bemerkung").value.trim();
 
-    if (produkt.type === "cup3") {
-        const s1 = document.getElementById("geschmack1").value;
-        const s2 = document.getElementById("geschmack2").value;
-        const s3 = document.getElementById("geschmack3").value;
-        if (s1) sorten.push(s1);
-        if (s2) sorten.push(s2);
-        if (s3) sorten.push(s3);
+    // Verificar se é um produto de gelado
+    const isIceProduct = ['portions', 'eis', 'kids'].includes(produkt.group) || 
+                         (produkt.group === 'food' && produkt.name.toLowerCase().includes('eis'));
+
+    if (isIceProduct) {
+        // Usar nova interface
+        if (currentSelectedFlavors.length > 0) {
+            sorten = [...currentSelectedFlavors];
+        }
+        
+        // Verificar se precisa selecionar sabores
+        if ((produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') && 
+            sorten.length < 3) {
+            alert("Bitte wählen Sie genau 3 Geschmacksrichtungen aus!");
+            return;
+        }
+        
+        // Usar seleção de Sahne da nova interface
+        var sahne = currentSahneOption;
+    } else {
+        // Usar interface antiga para produtos não-gelado
+        if (produkt.type === "cup3") {
+            const s1 = document.getElementById("geschmack1").value;
+            const s2 = document.getElementById("geschmack2").value;
+            const s3 = document.getElementById("geschmack3").value;
+            if (s1) sorten.push(s1);
+            if (s2) sorten.push(s2);
+            if (s3) sorten.push(s3);
+        }
+        
+        var sahne = "";
+        if (produkt.sahne) {
+            sahne = document.getElementById("sahne").value;
+        }
     }
 
-    let sahne = "";
     let sahneZuschlag = 0;
-    if (produkt.sahne) {
-        sahne = document.getElementById("sahne").value;
-        if (sahne === "mit Sahne") {
-            sahneZuschlag = SAHNE_AUFSCHLAG;
-        }
+    if (sahne === "mit Sahne") {
+        sahneZuschlag = SAHNE_AUFSCHLAG;
     }
 
     const endPreis = produkt.preis + sahneZuschlag;
@@ -1662,14 +1975,22 @@ function addToCart() {
         sahneZuschlag: sahneZuschlag
     });
 
+    // Limpar formulário
     document.getElementById("bemerkung").value = "";
+    document.getElementById("produkt").value = "";
+    
     if (produkt.type === "cup3") {
         ["geschmack1", "geschmack2", "geschmack3"].forEach(id => {
             document.getElementById(id).value = "";
         });
     }
-    document.getElementById("produkt").value = "";
+    
     document.getElementById("sahne").value = "";
+    document.getElementById("ice-options-container").style.display = "none";
+    
+    // Resetar seleções
+    currentSelectedFlavors = [];
+    currentSahneOption = 'mit Sahne';
 
     updateCart();
 }
@@ -1692,7 +2013,7 @@ function updateCart() {
         info.className = "item-info";
 
         let text = item.name + " – " + item.preis.toFixed(2).replace(".", ",") + " €";
-        if (item.type === "cup3" && item.sorten.length > 0) {
+        if (item.sorten && item.sorten.length > 0) {
             text += "<br><span class='small'>Sorten: " + item.sorten.join(", ") + "</span>";
         }
         if (item.bemerkung) {
@@ -1737,7 +2058,7 @@ function buildOrderText() {
     warenkorb.forEach(item => {
         total += item.preis;
         let line = `• ${item.name} (${item.preis.toFixed(2)} €)`;
-        if (item.type === "cup3" && item.sorten.length > 0) {
+        if (item.sorten && item.sorten.length > 0) {
             line += ` – Sorten: ${item.sorten.join(", ")}`;
         }
         if (item.bemerkung) {
@@ -1845,6 +2166,7 @@ function resetTable() {
     if (sahneSel) sahneSel.value = "";
 
     document.getElementById("bemerkung").value = "";
+    document.getElementById("ice-options-container").style.display = "none";
 }
 
 /* GPS */
