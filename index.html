@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Food & Drinks – QR Tischbestellung</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- ADICIONEI FONT AWESOME NO HEAD -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
@@ -192,7 +194,7 @@
             }
         }
 
-        /* RESTANTE DO CSS PERMANECE IGUAL ATÉ... */
+        /* RESTANTE DO CSS */
         .section-title {
             font-size: 18px;
             margin-top: 18px;
@@ -887,9 +889,6 @@
 
 </div>
 
-<!-- Adicionar Font Awesome para ícones -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <script>
 // =============== NOVAS VARIÁVEIS E FUNCIONALIDADES ===============
 const TRANSLATIONS = {
@@ -1181,7 +1180,7 @@ let currentLanguage = 'de';
 let selectedPrintOption = 'print-now';
 let savedOrders = JSON.parse(localStorage.getItem('saved_orders')) || [];
 let currentSelectedFlavors = [];
-let currentSahneOption = '';
+let currentSahneOption = 'mit Sahne';
 
 // Função para mudar idioma
 function setLanguage(lang) {
@@ -1280,6 +1279,12 @@ function setLanguage(lang) {
             btn.classList.add('active');
         }
     });
+    
+    // Atualizar opções de gelado se estiverem visíveis
+    const produktId = document.getElementById('produkt').value;
+    if (produktId) {
+        showIceOptions(produktId);
+    }
 }
 
 // Função para mostrar opções de gelado (3 sabores + sahne)
@@ -1355,23 +1360,25 @@ function showIceOptions(produktId) {
     // Preencher sabores disponíveis
     if (produkt.type === 'cup3' || produkt.group === 'portions' || produkt.group === 'eis') {
         const flavorGrid = document.getElementById('flavor-grid');
-        flavorGrid.innerHTML = '';
-        
-        // Mostrar apenas os primeiros 12 sabores para não sobrecarregar
-        const flavorsToShow = SORTEN.slice(0, 12);
-        
-        flavorsToShow.forEach(flavor => {
-            const flavorDiv = document.createElement('div');
-            flavorDiv.className = 'flavor-option';
-            flavorDiv.textContent = flavor;
-            flavorDiv.addEventListener('click', function() {
-                toggleFlavorSelection(this, flavor);
+        if (flavorGrid) {
+            flavorGrid.innerHTML = '';
+            
+            // Mostrar apenas os primeiros 12 sabores para não sobrecarregar
+            const flavorsToShow = SORTEN.slice(0, 12);
+            
+            flavorsToShow.forEach(flavor => {
+                const flavorDiv = document.createElement('div');
+                flavorDiv.className = 'flavor-option';
+                flavorDiv.textContent = flavor;
+                flavorDiv.addEventListener('click', function() {
+                    toggleFlavorSelection(this, flavor);
+                });
+                flavorGrid.appendChild(flavorDiv);
             });
-            flavorGrid.appendChild(flavorDiv);
-        });
-        
-        // Atualizar contador
-        updateFlavorCounter();
+            
+            // Atualizar contador
+            updateFlavorCounter();
+        }
     }
     
     // Configurar opções de Sahne
@@ -2416,7 +2423,14 @@ function addNewSorte() {
 }
 
 /* Init */
-window.addEventListener("load", initLocation);
+window.addEventListener("load", function() {
+    initLocation();
+    // Inicializar após o carregamento da página
+    setTimeout(() => {
+        buildProduktSelect(currentGroup);
+        updateTableDisplay();
+    }, 100);
+});
 </script>
 
 </body>
