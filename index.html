@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -479,7 +478,7 @@
         
         <!-- Aviso legal -->
         <div class="legal-notice">
-            <div class="legal-title" id="legal-title">ℹ Aviso Legal:</div>
+            <div class="legal-title" id="legal-title">ℹ️ Aviso Legal:</div>
             <p id="legal-text">
                 Os preços incluem IVA à taxa legal. O restaurante reserva-se o direito de alterar os preços sem aviso prévio. 
                 Para reclamações ou informações adicionais, contacte o nosso serviço de atendimento ao cliente.
@@ -526,7 +525,7 @@
                 "subtitle": "Faça seu pedido de forma rápida e fácil",
                 "menu-title": "Cardápio",
                 "order-title": "Seu Pedido",
-                "legal-title": "ℹ Aviso Legal:",
+                "legal-title": "ℹ️ Aviso Legal:",
                 "legal-text": "Os preços incluem IVA à taxa legal. O restaurante reserva-se o direito de alterar os preços sem aviso prévio. Para reclamações ou informações adicionais, contacte o nosso serviço de atendimento ao cliente.",
                 
                 // Botões
@@ -559,7 +558,7 @@
                 "subtitle": "Bestellen Sie schnell und einfach",
                 "menu-title": "Speisekarte",
                 "order-title": "Ihre Bestellung",
-                "legal-title": "ℹ Rechtlicher Hinweis:",
+                "legal-title": "ℹ️ Rechtlicher Hinweis:",
                 "legal-text": "Preise inklusive gesetzlicher Mehrwertsteuer. Das Restaurant behält sich das Recht vor, Preise ohne vorherige Ankündigung zu ändern. Für Beschwerden oder weitere Informationen kontaktieren Sie bitte unseren Kundendienst.",
                 
                 // Botões
@@ -592,7 +591,7 @@
                 "subtitle": "Ordina in modo rapido e semplice",
                 "menu-title": "Menù",
                 "order-title": "Il Tuo Ordine",
-                "legal-title": "ℹ Avviso Legale:",
+                "legal-title": "ℹ️ Avviso Legale:",
                 "legal-text": "I prezzi includono IVA al tasso legale. Il ristorante si riserva il diritto di modificare i prezzi senza preavviso. Per reclami o informazioni aggiuntive, contattare il nostro servizio clienti.",
                 
                 // Botões
@@ -854,9 +853,9 @@
             const tax = subtotal * 0.10;
             const total = subtotal + tax;
             
-            document.getElementById('subtotal-value').textContent = €${subtotal.toFixed(2)};
-            document.getElementById('tax-value').textContent = €${tax.toFixed(2)};
-            document.getElementById('total-value').textContent = €${total.toFixed(2)};
+            document.getElementById('subtotal-value').textContent = `€${subtotal.toFixed(2)}`;
+            document.getElementById('tax-value').textContent = `€${tax.toFixed(2)}`;
+            document.getElementById('total-value').textContent = `€${total.toFixed(2)}`;
         }
 
         // Guardar pedido no localStorage
