@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -334,7 +335,7 @@
             text-align: right;
         }
         
-        /* OPÇÕES DE SAHNE - NOVO DESIGN */
+        /* OPÇÕES DE SAHNE - NOVO DESIGN (APENAS UMA VEZ) */
         .sahne-selection {
             margin-top: 15px;
             background: #f8f9fa;
@@ -1206,7 +1207,7 @@ const TRANSLATIONS = {
         "confirm-print-text": "Bevestigen",
         
         "admin-panel-title": "Opgeslagen Bestellingen",
-        "admin-instructions": "Hier worden alle bestellingen opgeslagen die via WhatsApp zijn verzonden oder geprint. De chef kan individuele bestellingen of alle verwijderen.",
+        "admin-instructions": "Hier worden alle bestellingen opgeslagen die via WhatsApp zijn verzonden of geprint. De chef kan individuele bestellingen of alle verwijderen.",
         "clear-orders-btn": "Alle Bestellingen Verwijderen",
         "products-title": "Producten Beheren",
         "select-product-label": "Bestaand product selecteren:",
@@ -1355,6 +1356,7 @@ function showIceOptions(produktId) {
     }
     
     // Verificar se é um produto de gelado
+    // Consideramos gelado: tudo na categoria "portions", "eis", "kids" e alguns em "food"
     const isIceProduct = ['portions', 'eis', 'kids'].includes(produkt.group) || 
                          (produkt.group === 'food' && produkt.name.toLowerCase().includes('eis'));
     
@@ -1406,7 +1408,8 @@ function showIceOptions(produktId) {
         `;
     }
     
-    // Opção de Sahne para todos os produtos de gelado
+    // Opção de Sahne para todos os produtos de gelado (APENAS UMA VEZ)
+    // Verificar se o produto permite opção de sahne
     if (produkt.sahne) {
         html += `
         <div class="sahne-selection">
@@ -1841,7 +1844,7 @@ const BASE_PRODUCTS = {
     602:{ id:602, name:"Apfelstrudel mit Sahne",              preis:4.70, type:"normal", group:"food", sahne:true },
     603:{ id:603, name:"Apfelstrudel mit Eis",                preis:6.10, type:"normal", group:"food", sahne:true },
     610:{ id:610, name:"Hausgemachtes Tiramisu",              preis:4.20, type:"normal", group:"food", sahne:true },
-    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:true },
+    620:{ id:620, name:"Waffel mit Puderzucker",              preis:4.00, type:"normal", group:"food", sahne:false },
     621:{ id:621, name:"Waffel mit Sahne",                    preis:5.00, type:"normal", group:"food", sahne:true },
     622:{ id:622, name:"Waffel mit Eis",                      preis:5.30, type:"normal", group:"food", sahne:true },
     623:{ id:623, name:"Waffel mit Eis & Sahne",              preis:6.30, type:"normal", group:"food", sahne:true },
